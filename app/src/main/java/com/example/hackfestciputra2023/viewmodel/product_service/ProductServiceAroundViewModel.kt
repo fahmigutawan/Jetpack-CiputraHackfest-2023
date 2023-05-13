@@ -17,7 +17,7 @@ class ProductServiceAroundViewModel @Inject constructor(
     val jasaRecommendation = MutableStateFlow<Resource<GetBusinessResponse>>(Resource.Loading())
     val produkRecommendation = MutableStateFlow<Resource<GetBusinessResponse>>(Resource.Loading())
 
-    fun getJasaRecommendation(){
+    private fun getJasaRecommendation(){
         viewModelScope.launch {
             repository.getBusinessRecommendation("Jasa").collect{
                 jasaRecommendation.value = it
@@ -25,7 +25,7 @@ class ProductServiceAroundViewModel @Inject constructor(
         }
     }
 
-    fun getProductRecommendation(){
+    private fun getProductRecommendation(){
         viewModelScope.launch {
             repository.getBusinessRecommendation("Produk").collect{
                 produkRecommendation.value = it

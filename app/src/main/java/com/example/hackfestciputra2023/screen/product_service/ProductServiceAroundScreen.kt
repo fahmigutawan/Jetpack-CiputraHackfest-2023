@@ -38,9 +38,9 @@ import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTopBarMidTitle
 import com.example.hackfestciputra2023.component.ProductServiceItem
 import com.example.hackfestciputra2023.data.remote_source.Resource
-import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
+import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.product_service.ProductServiceAroundViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -161,21 +161,22 @@ fun ProductServiceAroundScreen(
                         when (index) {
                             0 -> {
                                 when (productRecommendationState.value) {
-                                    is Resource.Error -> {/*TODO*/
-                                    }
-
-                                    is Resource.Loading -> {/*TODO*/
-                                    }
-
+                                    is Resource.Error -> {/*TODO*/ }
+                                    is Resource.Loading -> {/*TODO*/ }
                                     is Resource.Success -> {
                                         productRecommendationState.value.data?.let {
-                                            items(it.data) {
+                                            items(it.data) { business ->
                                                 ProductServiceItem(
                                                     modifier = Modifier
                                                         .fillMaxWidth()
                                                         .padding(horizontal = 20.dp),
-                                                    item = it,
-                                                    onClick = {})
+                                                    item = business,
+                                                    onClick = {
+                                                        navController.navigate(
+                                                            NavRoute.PRODUCT_SERVICE_DETAIL.name + business.id
+                                                        )
+                                                    }
+                                                )
                                             }
                                         }
                                     }

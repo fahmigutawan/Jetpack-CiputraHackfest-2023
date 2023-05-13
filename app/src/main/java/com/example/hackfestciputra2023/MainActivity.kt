@@ -174,8 +174,11 @@ class MainActivity : ComponentActivity() {
                             ProductServiceAroundScreen(navController = navController)
                         }
 
-                        composable(NavRoute.PRODUCT_SERVICE_DETAIL.name){
-                            ProductServiceDetailScreen()
+                        composable(NavRoute.PRODUCT_SERVICE_DETAIL.name + "/{productServiceId}"){ backStackEntry ->
+                            val productServiceId = backStackEntry.arguments?.getInt("productServiceId")
+                            if (productServiceId != null) {
+                                ProductServiceDetailScreen(productServiceId)
+                            }
                         }
 
                         composable(NavRoute.PRODUCT_SERVICE_MOST_REQUESTED.name){
