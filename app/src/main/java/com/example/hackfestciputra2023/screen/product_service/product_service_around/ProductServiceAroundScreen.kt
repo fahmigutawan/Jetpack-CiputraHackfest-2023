@@ -1,4 +1,4 @@
-package com.example.hackfestciputra2023.screen.product_service_around
+package com.example.hackfestciputra2023.screen.product_service.product_service_around
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

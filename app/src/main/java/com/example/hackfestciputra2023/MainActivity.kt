@@ -24,6 +24,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.component.AppText
+import com.example.hackfestciputra2023.screen.home.HomeScreen
 import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.login.PostLoginState
 import com.example.hackfestciputra2023.screen.onboarding.OnboardingScreen
@@ -148,7 +149,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.HOME.name) {
-                            AppText(text = "HOME", style = AppType.h3Semibold)
+                            HomeScreen()
                         }
 
                         composable(NavRoute.USER_PICK_LOCATION.name) {
