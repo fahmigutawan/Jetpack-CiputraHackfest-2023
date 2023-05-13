@@ -20,6 +20,7 @@ import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,10 +31,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.core.app.ActivityCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
+import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
+import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.pick_location.PickLocationViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -53,7 +57,10 @@ import kotlinx.coroutines.launch
 @SuppressLint("MissingPermission", "UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun PickLocationScreen() {
+fun PickLocationScreen(
+    navController: NavController,
+    showSnackbar: (String) -> Unit
+) {
     val viewModel = hiltViewModel<PickLocationViewModel>()
     val singapore = LatLng(viewModel.userLat.value, viewModel.userLong.value)
     val cameraPositionState = rememberCameraPositionState {
@@ -65,6 +72,25 @@ fun PickLocationScreen() {
         rememberPermissionState(permission = android.Manifest.permission.ACCESS_COARSE_LOCATION)
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     val markerState = rememberMarkerState()
+    val addLocationState = viewModel.addLocationState.collectAsState()
+
+    LaunchedEffect(key1 = addLocationState.value) {
+        when (addLocationState.value) {
+            is Resource.Error -> {
+                showSnackbar(addLocationState.value.message.toString())
+            }
+
+            is Resource.Loading -> {/*TODO*/
+            }
+
+            is Resource.Success -> {
+                addLocationState.value.data?.let {
+                    navController.backQueue.clear()
+                    navController.navigate(NavRoute.HOME.name)
+                }
+            }
+        }
+    }
 
     LaunchedEffect(key1 = true) {
         locationPermission.launchPermissionRequest()
@@ -145,7 +171,7 @@ fun PickLocationScreen() {
                         .fillMaxWidth()
                         .padding(20.dp),
                     onClick = {
-                              Log.e("LOCATION ", "LONG - ${markerState.position.longitude}")
+                        viewModel.addLocation()
                     },
                     text = "Pilih lokasi ini"
                 )

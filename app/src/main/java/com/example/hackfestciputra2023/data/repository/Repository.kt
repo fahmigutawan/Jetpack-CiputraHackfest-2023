@@ -3,11 +3,10 @@ package com.example.hackfestciputra2023.data.repository
 import com.example.hackfestciputra2023.data.datastore_source.DatastoreSource
 import com.example.hackfestciputra2023.data.firebase_source.FirebaseSource
 import com.example.hackfestciputra2023.data.remote_source.RemoteSource
-import com.example.hackfestciputra2023.model.request.login.LoginRequest
-import com.example.hackfestciputra2023.model.request.register.RegisterRequest
-import dagger.Provides
+import com.example.hackfestciputra2023.model.request.auth.LoginRequest
+import com.example.hackfestciputra2023.model.request.auth.RegisterRequest
+import com.example.hackfestciputra2023.model.request.location.AddLocationRequest
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class Repository @Inject constructor(
     private val remoteSource: RemoteSource,
@@ -34,4 +33,12 @@ class Repository @Inject constructor(
             )
         )
 
+    fun addLocation(latitude:Double, longitude:Double) = remoteSource.addLocation(
+        AddLocationRequest(
+            latitude,
+            longitude
+        )
+    )
+
+    fun getUserLocationPickingStatus() = remoteSource.getUserLocationPickingStatus()
 }

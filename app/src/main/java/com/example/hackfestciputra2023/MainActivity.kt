@@ -26,6 +26,7 @@ import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.pick_location.PickLocationScreen
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
+import com.example.hackfestciputra2023.screen.splash.SplashScreen
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,10 +103,10 @@ class MainActivity : ComponentActivity() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = NavRoute.USER_PICK_LOCATION.name
+                    startDestination = NavRoute.SPLASH.name
                 ) {
                     composable(NavRoute.SPLASH.name) {
-
+                        SplashScreen(navController = navController, showSnackbar = showSnackbar)
                     }
 
                     composable(NavRoute.LOGIN.name) {
@@ -125,7 +126,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.USER_PICK_LOCATION.name){
-                        PickLocationScreen()
+                        PickLocationScreen(navController, showSnackbar)
                     }
                 }
             }
