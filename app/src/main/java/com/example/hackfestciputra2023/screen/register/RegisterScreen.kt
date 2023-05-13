@@ -15,6 +15,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,6 +31,7 @@ import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppIconButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTextButton
+import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
@@ -53,6 +56,15 @@ fun RegisterScreen(
     val passwordSame = remember {
         derivedStateOf {
             viewModel.passValue.value == viewModel.passConfirmValue.value
+        }
+    }
+    val registerState = viewModel.registerState.collectAsState()
+
+    LaunchedEffect(key1 = registerState.value){
+        when(registerState.value){
+            is Resource.Error -> {/*TODO*/}
+            is Resource.Loading -> {/*TODO*/}
+            is Resource.Success -> {/*TODO*/}
         }
     }
 

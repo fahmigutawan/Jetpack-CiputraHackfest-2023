@@ -22,7 +22,9 @@ class RemoteSource @Inject constructor(
         }.body<RegisterResponse>()
 
         if(res.meta.success){
-
+            Resource.Success(res)
+        }else{
+            Resource.Error(res.meta.message)
         }
     }
 }
