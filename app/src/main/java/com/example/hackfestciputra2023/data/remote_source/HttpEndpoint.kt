@@ -6,4 +6,5 @@ object HttpEndpoint {
     const val REGISTER = "$BASE_URL/user/register"
     const val USER_LOCATION = "$BASE_URL/user/location"
     const val GET_USER_PICKING_LOCATION_STATUS = "$BASE_URL/user/location/status"
+    const val USER_PROFILE = "$BASE_URL/user/profile"
 }
