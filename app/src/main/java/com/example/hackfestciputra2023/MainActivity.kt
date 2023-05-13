@@ -120,7 +120,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = NavRoute.PRODUCT_SERVICE_DETAIL.name
+                        startDestination = NavRoute.SPLASH.name
                     ) {
                         composable(NavRoute.SPLASH.name) {
                             SplashScreen(navController = navController, showSnackbar = showSnackbar)
@@ -151,7 +151,9 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.HOME.name) {
-                            HomeScreen()
+                            HomeScreen(
+                                navController
+                            )
                         }
 
                         composable(NavRoute.USER_PICK_LOCATION.name) {
@@ -168,6 +170,14 @@ class MainActivity : ComponentActivity() {
 
                         composable(NavRoute.PRODUCT_SERVICE_DETAIL.name){
                             ProductServiceDetailScreen()
+                        }
+
+                        composable(NavRoute.PRODUCT_SERVICE_MOST_REQUESTED.name){
+
+                        }
+
+                        composable(NavRoute.PRODUCT_SERVICE_OPEN24.name){
+
                         }
                     }
                 }

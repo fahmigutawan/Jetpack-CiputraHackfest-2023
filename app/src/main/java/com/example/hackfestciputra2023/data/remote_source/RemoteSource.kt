@@ -4,6 +4,7 @@ import com.example.hackfestciputra2023.model.request.auth.LoginRequest
 import com.example.hackfestciputra2023.model.request.auth.RegisterRequest
 import com.example.hackfestciputra2023.model.request.location.AddLocationRequest
 import com.example.hackfestciputra2023.model.response.auth.AuthResponse
+import com.example.hackfestciputra2023.model.response.business.GetBusinessResponse
 import com.example.hackfestciputra2023.model.response.location.AddLocationResponse
 import com.example.hackfestciputra2023.model.response.location.GetLocationPickingStatusResponse
 import com.example.hackfestciputra2023.model.response.user.UserProfileResponse
@@ -84,6 +85,19 @@ class RemoteSource @Inject constructor(
         if (res.meta.success) {
             Resource.Success(res)
         } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun getBusinessRecommendation(type:String) = getResponse {
+        val res = client.get {
+            url("${HttpEndpoint.BUSINESS_RECOMMENDATION}?tipe=$type")
+            contentType(ContentType.Application.Json)
+        }.body<GetBusinessResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
             Resource.Error(res.meta.message)
         }
     }

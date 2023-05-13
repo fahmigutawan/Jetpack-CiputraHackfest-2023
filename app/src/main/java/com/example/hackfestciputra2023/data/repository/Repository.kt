@@ -43,4 +43,6 @@ class Repository @Inject constructor(
     fun getUserLocationPickingStatus() = remoteSource.getUserLocationPickingStatus()
 
     fun getUserProfile() = remoteSource.getUserProfile()
+
+    fun getBusinessRecommendation(type:String) = remoteSource.getBusinessRecommendation(type)
 }
