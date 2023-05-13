@@ -1,4 +1,4 @@
-package com.example.hackfestciputra2023.viewmodel.product_service_around
+package com.example.hackfestciputra2023.viewmodel.product_service
 
 import androidx.lifecycle.ViewModel
 import com.example.hackfestciputra2023.data.repository.Repository

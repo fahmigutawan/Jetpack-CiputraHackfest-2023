@@ -1,5 +1,6 @@
-package com.example.hackfestciputra2023.screen.product_service.details
+package com.example.hackfestciputra2023.screen.product_service
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -19,11 +21,20 @@ import androidx.compose.ui.unit.dp
 import com.example.hackfestciputra2023.R
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
+import com.example.hackfestciputra2023.component.AppTopBarMidTitle
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ProductServiceDetailsScreen() {
+fun ProductServiceDetailScreen() {
+    Scaffold(
+        topBar = {
+            AppTopBarMidTitle(onBackClicked = { /*TODO*/ }, title = "Produk")
+        }
+    ) {
+
+    }
     Column {
         Row(Modifier.padding(start = 12.dp)) {
             Surface(shape = CircleShape) {

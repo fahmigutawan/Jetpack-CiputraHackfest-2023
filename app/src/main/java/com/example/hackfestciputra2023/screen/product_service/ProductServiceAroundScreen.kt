@@ -1,4 +1,4 @@
-package com.example.hackfestciputra2023.screen.product_service.product_service_around
+package com.example.hackfestciputra2023.screen.product_service
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -39,7 +39,7 @@ import com.example.hackfestciputra2023.component.ProductServiceItem
 import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
-import com.example.hackfestciputra2023.viewmodel.product_service_around.ProductServiceAroundViewModel
+import com.example.hackfestciputra2023.viewmodel.product_service.ProductServiceAroundViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState

@@ -29,7 +29,8 @@ import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.login.PostLoginState
 import com.example.hackfestciputra2023.screen.onboarding.OnboardingScreen
 import com.example.hackfestciputra2023.screen.pick_location.PickLocationScreen
-import com.example.hackfestciputra2023.screen.product_service_around.ProductServiceAroundScreen
+import com.example.hackfestciputra2023.screen.product_service.ProductServiceAroundScreen
+import com.example.hackfestciputra2023.screen.product_service.ProductServiceDetailScreen
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
 import com.example.hackfestciputra2023.screen.splash.SplashScreen
 import com.example.hackfestciputra2023.ui.theme.AppType
@@ -119,7 +120,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = NavRoute.SPLASH.name
+                        startDestination = NavRoute.PRODUCT_SERVICE_DETAIL.name
                     ) {
                         composable(NavRoute.SPLASH.name) {
                             SplashScreen(navController = navController, showSnackbar = showSnackbar)
@@ -163,6 +164,10 @@ class MainActivity : ComponentActivity() {
 
                         composable(NavRoute.PRODUCT_SERVICE_AROUND.name){
                             ProductServiceAroundScreen(navController = navController)
+                        }
+
+                        composable(NavRoute.PRODUCT_SERVICE_DETAIL.name){
+                            ProductServiceDetailScreen()
                         }
                     }
                 }
