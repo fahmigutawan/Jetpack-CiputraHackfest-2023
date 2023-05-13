@@ -20,6 +20,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hackfestciputra2023.component.AppSnackbar
+import com.example.hackfestciputra2023.screen.register.RegisterScreen
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.REGISTER.name) {
-
+                        RegisterScreen(navController = navController)
                     }
                 }
             }
