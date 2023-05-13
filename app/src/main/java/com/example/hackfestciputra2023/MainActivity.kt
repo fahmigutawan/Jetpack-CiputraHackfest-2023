@@ -114,6 +114,14 @@ class MainActivity : ComponentActivity() {
                     composable(NavRoute.REGISTER.name) {
                         RegisterScreen(navController = navController, showSnackbar = showSnackbar)
                     }
+
+                    composable(NavRoute.ONBOARDING.name){
+
+                    }
+
+                    composable(NavRoute.HOME.name){
+
+                    }
                 }
             }
         }

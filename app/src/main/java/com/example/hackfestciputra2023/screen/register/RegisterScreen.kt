@@ -64,7 +64,11 @@ fun RegisterScreen(
         when(registerState.value){
             is Resource.Error -> {/*TODO*/}
             is Resource.Loading -> {/*TODO*/}
-            is Resource.Success -> {/*TODO*/}
+            is Resource.Success -> {
+                registerState.value.data?.let {
+                    viewModel.saveToken(it.data.token)
+                }
+            }
         }
     }
 
@@ -173,13 +177,12 @@ fun RegisterScreen(
             AppButton(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    when {
-                        allNotFilled.value -> {
-                            showSnackbar("Masukkan semua data dengan benar")
-                        }
-                        !passwordSame.value -> {
-                            showSnackbar("Masukkan password yang sama")
-                        }
+                    if(allNotFilled.value){
+                        showSnackbar("Masukkan semua data dengan benar")
+                    }else if(!passwordSame.value){
+                        showSnackbar("Masukkan password yang sama")
+                    }else{
+                        viewModel.register()
                     }
                 },
                 text = "Daftar"

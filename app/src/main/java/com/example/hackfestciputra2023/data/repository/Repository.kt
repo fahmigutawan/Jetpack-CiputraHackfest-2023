@@ -14,6 +14,9 @@ class Repository @Inject constructor(
     private val datastoreSource: DatastoreSource,
     private val firebaseSource: FirebaseSource
 ) {
+    suspend fun setToken(token: String) = datastoreSource.setToken(token)
+
+    fun getToken() = datastoreSource.getToken()
     fun register(phone_number: String, password: String, address: String, name: String) =
         remoteSource.register(
             RegisterRequest(
