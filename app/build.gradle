@@ -54,6 +54,7 @@ android {
 
 dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.1.0'
+    implementation 'com.google.android.gms:play-services-location:21.0.1'
     def ktor_version="2.3.0"
     def nav_version = "2.5.3"
     def serialization_version = '1.3.0'
@@ -106,6 +107,7 @@ dependencies {
 
     //Icon Extended
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
+
     // Compose Maps library
     implementation 'com.google.maps.android:maps-compose:2.11.2'
 
@@ -117,6 +119,9 @@ dependencies {
 
     // Google Maps widgets library
     implementation 'com.google.maps.android:maps-compose-widgets:2.11.2'
+
+    //Permisssions
+    implementation "com.google.accompanist:accompanist-permissions:0.25.1"
 }
 
 kapt {

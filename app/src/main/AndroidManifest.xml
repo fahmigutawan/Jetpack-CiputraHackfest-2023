@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".MainApplication"
@@ -16,6 +17,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.BccXraionHackfestCiputra"
         tools:targetApi="31">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyBFZ7eOecv3YTfR08vcNAIiYfOgfYMQzgQ"/>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

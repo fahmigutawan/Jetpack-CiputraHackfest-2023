@@ -24,7 +24,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.screen.login.LoginScreen
-import com.example.hackfestciputra2023.screen.onboarding.OnboardingScreen
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
@@ -102,14 +101,14 @@ class MainActivity : ComponentActivity() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = NavRoute.ONBOARDING.name
+                    startDestination = NavRoute.LOGIN.name
                 ) {
                     composable(NavRoute.SPLASH.name) {
 
                     }
 
                     composable(NavRoute.LOGIN.name) {
-                        LoginScreen(navController = navController, showSnackbar = showSnackbar)
+                        LoginScreen(navController = navController)
                     }
 
                     composable(NavRoute.REGISTER.name) {
@@ -117,11 +116,15 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.ONBOARDING.name){
-                        OnboardingScreen(navController = navController)
+
                     }
 
                     composable(NavRoute.HOME.name){
 
+                    }
+
+                    composable(NavRoute.USER_PICK_LOCATION.name){
+                        PickLocationScreen()
                     }
                 }
             }
