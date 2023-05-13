@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
@@ -83,16 +84,26 @@ fun HomeScreen() {
                 .fillMaxWidth()
                 .padding(vertical = 10.dp), Arrangement.Center
         ) {
-            Surface(shape = RoundedCornerShape(7.dp), color = AppColor.primary400) {
-                Icon(Icons.Default.LocationOn, null)
+            Column {
+                Surface(shape = RoundedCornerShape(7.dp), color = AppColor.primary400) {
+                    Icon(Icons.Default.LocationOn, null)
+                }
                 AppText(text = "Di sekitarmu", style = AppType.subheading3)
             }
             Spacer(Modifier.width(10.dp))
-            Surface(shape = RoundedCornerShape(7.dp), color = AppColor.primary400) {
-                Icon(painterResource(R.drawable.three_user), null)
+            Column {
+                Surface(shape = RoundedCornerShape(7.dp), color = AppColor.primary400) {
+                    Icon(painterResource(R.drawable.three_user), null)
+                }
                 AppText(text = "Di sekitarmu", style = AppType.subheading3)
             }
             Spacer(Modifier.width(10.dp))
+            Column {
+                Surface(shape = RoundedCornerShape(7.dp), color = AppColor.primary400) {
+                    Icon(Icons.Default.AccessTime, null)
+                }
+                AppText(text = "Di sekitarmu", style = AppType.subheading3)
+            }
         }
     }
 }
