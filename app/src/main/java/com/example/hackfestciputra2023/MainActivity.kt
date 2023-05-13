@@ -33,6 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.component.AppText
+import com.example.hackfestciputra2023.screen.bayar.BayarScreen
 import com.example.hackfestciputra2023.screen.home.HomeScreen
 import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.login.PostLoginState
@@ -146,18 +147,20 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     floatingActionButton = {
-                        FloatingActionButton(
-                            modifier = Modifier.shadow(2.dp, CircleShape),
-                            onClick = {
-                                navController.navigate(NavRoute.BAYAR.name)
-                            },
-                            backgroundColor = AppColor.primary400
-                        ) {
-                            Icon(
-                                painter = rememberAsyncImagePainter(model = R.drawable.bottombar_bayar_icon),
-                                contentDescription = "",
-                                tint = AppColor.grey50
-                            )
+                        if(rootViewmodel.showBottombar.value){
+                            FloatingActionButton(
+                                modifier = Modifier.shadow(2.dp, CircleShape),
+                                onClick = {
+                                    navController.navigate(NavRoute.BAYAR.name)
+                                },
+                                backgroundColor = AppColor.primary400
+                            ) {
+                                Icon(
+                                    painter = rememberAsyncImagePainter(model = R.drawable.bottombar_bayar_icon),
+                                    contentDescription = "",
+                                    tint = AppColor.grey50
+                                )
+                            }
                         }
                     },
                     floatingActionButtonPosition = FabPosition.Center,
@@ -203,7 +206,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.BAYAR.name) {
-
+                            BayarScreen(navController = navController)
                         }
 
                         composable(NavRoute.PROFILE.name) {
