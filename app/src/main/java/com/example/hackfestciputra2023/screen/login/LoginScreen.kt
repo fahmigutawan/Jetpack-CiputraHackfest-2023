@@ -55,7 +55,7 @@ fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
             is Resource.Success -> {
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data.token)
-                    delay(1500)
+                    delay(2000)
                     navController.backQueue.clear()
                     navController.navigate(NavRoute.POSTLOGIN.name)
                 }

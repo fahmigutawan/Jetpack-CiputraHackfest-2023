@@ -24,31 +24,29 @@ class LoginViewModel @Inject constructor(
     var isPasswordVisible by mutableStateOf(false)
 
     val loginState = MutableStateFlow<Resource<AuthResponse>>(Resource.Loading())
-    val userMapPickingStatusState = MutableStateFlow<Resource<GetLocationPickingStatusResponse>>(Resource.Loading())
+    val userMapPickingStatusState =
+        MutableStateFlow<Resource<GetLocationPickingStatusResponse>>(Resource.Loading())
 
     fun login() {
         viewModelScope.launch {
             repository.login(
                 phone_number = phoneNumber,
                 password = password
-            ).collect{
+            ).collect {
                 loginState.value = it
             }
         }
     }
 
-    fun getUserLocationPickingStatus(){
+    fun getUserLocationPickingStatus() {
         viewModelScope.launch {
-            repository.getUserLocationPickingStatus().collect{
+            repository.getUserLocationPickingStatus().collect {
                 userMapPickingStatusState.value = it
             }
         }
     }
 
-    fun saveToken(token:String){
-        viewModelScope.launch {
-            repository.setToken(token)
-        }
+    suspend fun saveToken(token: String) {
+        repository.setToken(token)
     }
-
 }

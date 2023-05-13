@@ -21,20 +21,22 @@ import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.serialization.gson.gson
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RemoteModule{
+class RemoteModule {
     @Provides
     @Singleton
     fun provideHttpClient(
         datastoreSource: DatastoreSource,
         @ApplicationContext context: Context
     ) = HttpClient(Android) {
-        install(ContentNegotiation){
+        install(ContentNegotiation) {
             gson()
         }
         install(HttpTimeout) {
@@ -45,21 +47,31 @@ class RemoteModule{
         install(Auth) {
             bearer {
                 loadTokens {
+//                    var token =
+//                        delay(1500)
                     BearerTokens(
-                        accessToken = datastoreSource.getToken().first(),
+                        accessToken = try {
+                            datastoreSource.getToken().first()
+                        } catch (e: NoSuchElementException) {
+                            ""
+                        },
                         refreshToken = ""
                     )
                 }
 
                 refreshTokens {
                     BearerTokens(
-                        "",
+                        try {
+                            datastoreSource.getToken().first()
+                        } catch (e: NoSuchElementException) {
+                            ""
+                        },
                         ""
                     )
                 }
             }
         }
-        install(Logging){
+        install(Logging) {
             logger = Logger.ANDROID
             level = LogLevel.ALL
         }
