@@ -10,8 +10,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
+import androidx.compose.material.SnackbarDuration
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -53,6 +56,41 @@ class MainActivity : ComponentActivity() {
                 rootViewmodel.snackbarMessage.value = message
                 rootViewmodel.snackbarActive.value = true
             }
+            if (rootViewmodel.snackbarActive.value) {
+                LaunchedEffect(key1 = true) {
+                    val resetSnackbarState = {
+                        rootViewmodel.snackbarAction.value = {}
+                        rootViewmodel.snackbarActionLabel.value = "Tutup"
+                        rootViewmodel.snackbarMessage.value = ""
+                        rootViewmodel.snackbarActive.value = false
+                    }
+                    val snackbarData = scaffoldState.snackbarHostState.showSnackbar(
+                        message = rootViewmodel.snackbarMessage.value,
+                        actionLabel = rootViewmodel.snackbarActionLabel.value,
+                        duration = SnackbarDuration.Short
+                    )
+
+                    when (snackbarData) {
+                        SnackbarResult.Dismissed -> {
+                            resetSnackbarState()
+                        }
+
+                        SnackbarResult.ActionPerformed -> {
+                            when (rootViewmodel.snackbarActionLabel.value) {
+                                "Tutup" -> {
+                                    scaffoldState.snackbarHostState.currentSnackbarData?.performAction()
+                                    resetSnackbarState()
+                                }
+
+                                else -> {
+                                    rootViewmodel.snackbarAction.value(scaffoldState.snackbarHostState.currentSnackbarData)
+                                    resetSnackbarState()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
             Scaffold(
                 scaffoldState = scaffoldState,
@@ -73,7 +111,7 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.REGISTER.name) {
-                        RegisterScreen(navController = navController)
+                        RegisterScreen(navController = navController, showSnackbar = showSnackbar)
                     }
                 }
             }
