@@ -99,7 +99,7 @@ fun ProductServiceAroundScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarMidTitle(onBackClicked = { /*TODO*/ }, title = "Di sekitarmu")
+            AppTopBarMidTitle(onBackClicked = { navController.popBackStack() }, title = "Di sekitarmu")
         }
     ) {
         Column {

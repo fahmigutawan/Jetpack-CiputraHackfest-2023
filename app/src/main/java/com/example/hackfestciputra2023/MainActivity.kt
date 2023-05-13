@@ -118,7 +118,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     NavHost(
                         navController = navController,
-                        startDestination = NavRoute.PRODUCT_SERVICE_AROUND.name
+                        startDestination = NavRoute.SPLASH.name
                     ) {
                         composable(NavRoute.SPLASH.name) {
                             SplashScreen(navController = navController, showSnackbar = showSnackbar)
