@@ -127,7 +127,7 @@ fun HomeScreen(navController: NavController) {
                         imageVector = Icons.Default.Notifications,
                         onClick = { /*TODO*/ },
                         tint = AppColor.primary400,
-                        shape = RoundedCornerShape(8.dp),
+                        shape = CircleShape,
                         backgroundColor = AppColor.grey50
                     )
                 }

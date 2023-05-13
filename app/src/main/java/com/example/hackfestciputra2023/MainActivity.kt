@@ -9,6 +9,9 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarDuration
@@ -23,6 +26,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.component.AppText
@@ -35,6 +39,7 @@ import com.example.hackfestciputra2023.screen.product_service.ProductServiceArou
 import com.example.hackfestciputra2023.screen.product_service.ProductServiceDetailScreen
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
 import com.example.hackfestciputra2023.screen.splash.SplashScreen
+import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
@@ -112,6 +117,16 @@ class MainActivity : ComponentActivity() {
                     }
                 }
             }
+            navController.addOnDestinationChangedListener { _, destination, _ ->
+                rootViewmodel.currentRoute.value = destination.route ?: ""
+
+                rootViewmodel.showBottombar.value = when (destination.route ?: "") {
+                    NavRoute.HOME.name -> true
+                    NavRoute.PROFILE.name -> true
+                    NavRoute.BAYAR.name -> true
+                    else -> false
+                }
+            }
 
             SwipeRefresh(state = swipeRefreshState, onRefresh = { /*TODO*/ }) {
                 Scaffold(
@@ -120,8 +135,29 @@ class MainActivity : ComponentActivity() {
                         AppSnackbar(hostState = it)
                     },
                     bottomBar = {
-                        AppBottomBar(onClick = {route -> })
-                    }
+                        if (rootViewmodel.showBottombar.value) {
+                            AppBottomBar(
+                                onClick = { route -> navController.navigate(route) },
+                                currentRoute = rootViewmodel.currentRoute.value
+                            )
+                        }
+                    },
+                    floatingActionButton = {
+                        FloatingActionButton(
+                            onClick = {
+                                navController.navigate(NavRoute.BAYAR.name)
+                            },
+                            backgroundColor = AppColor.primary400
+                        ) {
+                            Icon(
+                                painter = rememberAsyncImagePainter(model = R.drawable.bottombar_bayar_icon),
+                                contentDescription = "",
+                                tint = AppColor.grey50
+                            )
+                        }
+                    },
+                    floatingActionButtonPosition = FabPosition.Center,
+                    isFloatingActionButtonDocked = true
                 ) {
                     NavHost(
                         modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
@@ -162,6 +198,14 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
+                        composable(NavRoute.BAYAR.name) {
+
+                        }
+
+                        composable(NavRoute.PROFILE.name) {
+
+                        }
+
                         composable(NavRoute.USER_PICK_LOCATION.name) {
                             PickLocationScreen(
                                 navController = navController,
@@ -170,19 +214,19 @@ class MainActivity : ComponentActivity() {
                             )
                         }
 
-                        composable(NavRoute.PRODUCT_SERVICE_AROUND.name){
+                        composable(NavRoute.PRODUCT_SERVICE_AROUND.name) {
                             ProductServiceAroundScreen(navController = navController)
                         }
 
-                        composable(NavRoute.PRODUCT_SERVICE_DETAIL.name){
+                        composable(NavRoute.PRODUCT_SERVICE_DETAIL.name) {
                             ProductServiceDetailScreen()
                         }
 
-                        composable(NavRoute.PRODUCT_SERVICE_MOST_REQUESTED.name){
+                        composable(NavRoute.PRODUCT_SERVICE_MOST_REQUESTED.name) {
 
                         }
 
-                        composable(NavRoute.PRODUCT_SERVICE_OPEN24.name){
+                        composable(NavRoute.PRODUCT_SERVICE_OPEN24.name) {
 
                         }
                     }
