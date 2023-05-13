@@ -46,5 +46,5 @@ class Repository @Inject constructor(
 
     fun getBusinessRecommendation(type:String) = remoteSource.getBusinessRecommendation(type)
 
-    fun getBusinessDetails(id: Int) = remoteSource.getBusinessDetails(id)
+    fun getBusinessDetails(id: String) = remoteSource.getBusinessDetails(id)
 }

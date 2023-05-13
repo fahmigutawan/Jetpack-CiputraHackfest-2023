@@ -5,9 +5,6 @@ import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FabPosition
@@ -17,26 +14,26 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
-import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
-import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.screen.bayar.BayarScreen
 import com.example.hackfestciputra2023.screen.home.HomeScreen
 import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.login.PostLoginState
+import com.example.hackfestciputra2023.screen.map.MapDetailScreen
 import com.example.hackfestciputra2023.screen.onboarding.OnboardingScreen
 import com.example.hackfestciputra2023.screen.pick_location.PickLocationScreen
 import com.example.hackfestciputra2023.screen.product_service.ProductServiceAroundScreen
@@ -44,7 +41,6 @@ import com.example.hackfestciputra2023.screen.product_service.ProductServiceDeta
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
 import com.example.hackfestciputra2023.screen.splash.SplashScreen
 import com.example.hackfestciputra2023.ui.theme.AppColor
-import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
@@ -147,7 +143,7 @@ class MainActivity : ComponentActivity() {
                         }
                     },
                     floatingActionButton = {
-                        if(rootViewmodel.showBottombar.value){
+                        if (rootViewmodel.showBottombar.value) {
                             FloatingActionButton(
                                 modifier = Modifier.shadow(2.dp, CircleShape),
                                 onClick = {
@@ -225,11 +221,16 @@ class MainActivity : ComponentActivity() {
                             ProductServiceAroundScreen(navController = navController)
                         }
 
-                        composable(NavRoute.PRODUCT_SERVICE_DETAIL.name + "/{productServiceId}"){ backStackEntry ->
-                            val productServiceId = backStackEntry.arguments?.getInt("productServiceId")
-                            if (productServiceId != null) {
-                                ProductServiceDetailScreen(productServiceId)
-                            }
+                        composable(
+                            "${NavRoute.PRODUCT_SERVICE_DETAIL.name}/{id}",
+                            arguments = listOf(
+                                navArgument("id") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) { backStackEntry ->
+                            val id = backStackEntry.arguments?.getString("id") ?: ""
+                            ProductServiceDetailScreen(navController, id)
                         }
 
                         composable(NavRoute.PRODUCT_SERVICE_MOST_REQUESTED.name) {
@@ -238,6 +239,27 @@ class MainActivity : ComponentActivity() {
 
                         composable(NavRoute.PRODUCT_SERVICE_OPEN24.name) {
 
+                        }
+
+                        composable(
+                            "${NavRoute.MAP_DETAIL.name}/lat={lat}&long={long}",
+                            arguments = listOf(
+                                navArgument("lat"){
+                                    type = NavType.FloatType
+                                },
+                                navArgument("long"){
+                                    type = NavType.FloatType
+                                }
+                            )
+                        ){
+                            val lat = (it.arguments?.getFloat("lat") ?: 0f).toDouble()
+                            val long = (it.arguments?.getFloat("long") ?: 0f).toDouble()
+
+                            MapDetailScreen(
+                                navController = navController,
+                                pedagang_lat = lat,
+                                pedagang_long = long
+                            )
                         }
                     }
                 }

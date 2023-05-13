@@ -92,7 +92,7 @@ class RemoteSource @Inject constructor(
 
     fun getBusinessRecommendation(type:String) = getResponse {
         val res = client.get {
-            url("${HttpEndpoint.BUSINESS_RECOMMENDATION}?tipe=$type")
+            url("${HttpEndpoint.BUSINESS_RECOMMENDATION}?type=$type")
             contentType(ContentType.Application.Json)
         }.body<GetBusinessResponse>()
 
@@ -103,9 +103,9 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getBusinessDetails(id: Int) = getResponse {
+    fun getBusinessDetails(id: String) = getResponse {
         val res = client.get {
-            url(HttpEndpoint.BUSINESS_DETAILS + "$id")
+            url("${HttpEndpoint.BUSINESS_DETAILS}/$id")
             contentType(ContentType.Application.Json)
         }.body<GetBusinessDetailsResponse>()
 

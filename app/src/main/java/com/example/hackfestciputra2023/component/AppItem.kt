@@ -17,6 +17,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import com.example.hackfestciputra2023.model.dummy.DummyBayarPesananItem
 import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.model.response.base.SingleBusinessResponse
+import com.example.hackfestciputra2023.model.response.base.Testimony
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 
@@ -107,7 +109,9 @@ fun ProductServiceItem(
 @Composable
 fun BayarPesananItem(
     modifier: Modifier = Modifier,
-    item: DummyBayarPesananItem
+    item: DummyBayarPesananItem,
+    lihatMapClicked:(DummyBayarPesananItem) -> Unit,
+    bayarClicked:(DummyBayarPesananItem) -> Unit
 ) {
     Box(
         modifier = modifier
@@ -148,15 +152,15 @@ fun BayarPesananItem(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     AppButton(
-                        onClick = { /*TODO*/ },
+                        onClick = { lihatMapClicked(item) },
                         text = "Lihat Maps",
                         backgroundColor = AppColor.primary100,
                         textColor = AppColor.primary400
                     )
 
-                    Spacer(modifier =Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(8.dp))
 
-                    AppButton(onClick = { /*TODO*/ }, text = "Bayar sekarang")
+                    AppButton(onClick = { bayarClicked(item) }, text = "Bayar sekarang")
                 }
             }
         }
@@ -233,6 +237,24 @@ fun DummyProductServiceItem(
                 onClick = { /*TODO*/ },
                 backgroundColor = AppColor.grey300
             )
+        }
+    }
+}
+
+@Composable
+fun ProductServiceUlasanItem(modifier: Modifier = Modifier, item: Testimony) {
+    Box(
+        modifier = modifier
+            .clip(RoundedCornerShape(12.dp))
+            .background(AppColor.grey100)
+    ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Icon(imageVector = Icons.Default.Person, contentDescription = "")
+                AppText(text = item.user.name, style = AppType.body1)
+            }
+
+            AppText(text = item.comentar, style = AppType.body2, color = AppColor.grey600)
         }
     }
 }

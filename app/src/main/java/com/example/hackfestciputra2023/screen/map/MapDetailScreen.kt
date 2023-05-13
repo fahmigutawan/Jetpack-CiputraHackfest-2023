@@ -30,12 +30,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.hackfestciputra2023.R
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
+import com.example.hackfestciputra2023.util.bitmapDescriptor
 import com.example.hackfestciputra2023.viewmodel.pick_location.PickLocationViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -46,23 +48,25 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-@SuppressLint("MissingPermission")
+@SuppressLint("MissingPermission", "UnusedMaterialScaffoldPaddingParameter")
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun MapDetalScreen(
+fun MapDetailScreen(
     navController: NavController,
     pedagang_lat:Double,
     pedagang_long:Double
 ) {
     val viewModel = hiltViewModel<PickLocationViewModel>()
-    val singapore = LatLng(viewModel.userLat.value, viewModel.userLong.value)
+    val pedagang = LatLng(pedagang_lat, pedagang_long)
+    val user = LatLng(viewModel.userLat.value, viewModel.userLong.value)
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(singapore, 10f)
+        position = CameraPosition.fromLatLngZoom(user, 10f)
     }
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
@@ -112,7 +116,7 @@ fun MapDetalScreen(
                         cameraPositionState.animate(
                             update = CameraUpdateFactory.newCameraPosition(
                                 CameraPosition(
-                                    singapore,
+                                    pedagang,
                                     12.5f,
                                     0f,
                                     0f
@@ -162,38 +166,29 @@ fun MapDetalScreen(
     }
 
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        bottomBar = {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(AppColor.grey50)
-            ) {
-                AppButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp),
-                    onClick = {
-                        viewModel.addLocation()
-                    },
-                    text = "Pilih lokasi ini"
-                )
-            }
-        }
+        modifier = Modifier.fillMaxSize()
     ) {
         GoogleMap(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = it.calculateBottomPadding()),
-            cameraPositionState = cameraPositionState,
-            onMapClick = {
-                markerState.position = it
-            }
+                .fillMaxSize(),
+            cameraPositionState = cameraPositionState
         ) {
             Marker(
                 state = markerState,
                 title = "Your location",
-                draggable = true
+                draggable = false,
+                icon = bitmapDescriptor(
+                    context = context,
+                    vectorResId = R.drawable.baseline_circle_24
+                )
+            )
+
+            Marker(
+                state = MarkerState(
+                    pedagang
+                ),
+                title = "Pedagang's location",
+                draggable = false
             )
         }
     }

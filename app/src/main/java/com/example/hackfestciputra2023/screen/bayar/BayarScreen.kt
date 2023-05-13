@@ -37,6 +37,7 @@ import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.model.dummy.DummyBayarPesananItem
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
+import com.example.hackfestciputra2023.util.NavRoute
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
@@ -68,7 +69,7 @@ fun BayarScreen(
     )
 
     Column {
-        AppText(modifier = Modifier.padding(20.dp),text = "Bayar Pesanan", style = AppType.h3)
+        AppText(modifier = Modifier.padding(20.dp), text = "Bayar Pesanan", style = AppType.h3)
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -123,16 +124,21 @@ fun BayarScreen(
             state = pagerState,
             userScrollEnabled = false
         ) { index ->
-            when(index){
+            when (index) {
                 0 -> {
-                    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)){
-                        items(dummyItems){
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+                        items(dummyItems) {
                             BayarPesananItem(modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = 20.dp), item = it)
+                                .padding(horizontal = 20.dp),
+                                item = it,
+                                lihatMapClicked = {
+                                    navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.lat}&long=${it.long}")
+                                },
+                                bayarClicked = {/*TODO*/})
                         }
 
-                        item{
+                        item {
                             Spacer(modifier = Modifier)
                         }
                     }

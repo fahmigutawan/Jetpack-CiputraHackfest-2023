@@ -333,6 +333,10 @@ fun HomeScreen(navController: NavController) {
                 }
             }
         }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
     }
 }
 

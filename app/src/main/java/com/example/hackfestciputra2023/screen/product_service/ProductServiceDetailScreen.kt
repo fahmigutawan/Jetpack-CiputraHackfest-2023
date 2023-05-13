@@ -39,12 +39,15 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTopBarMidTitle
+import com.example.hackfestciputra2023.component.ProductServiceUlasanItem
 import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
+import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.product_service.ProductServiceDetailsViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -54,7 +57,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun ProductServiceDetailScreen(id: Int) {
+fun ProductServiceDetailScreen(
+    navController: NavController,
+    id: String
+) {
     val viewModel = hiltViewModel<ProductServiceDetailsViewModel>()
     val listOfTopBtnSection = listOf("Deskripsi", "Ulasan")
     val topBtnContainerWidth = remember { mutableStateOf(0.dp) }
@@ -83,7 +89,13 @@ fun ProductServiceDetailScreen(id: Int) {
                         .padding(20.dp), horizontalArrangement = Arrangement.Center
                 ) {
                     AppButton(
-                        onClick = { /*TODO*/ },
+                        onClick = {
+                            if (businessDetailsState.value is Resource.Success) {
+                                businessDetailsState.value.data?.let {
+                                    navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.data.latitude}&long=${it.data.longitude}")
+                                }
+                            }
+                        },
                         text = "Lihat Map",
                         textColor = AppColor.primary400,
                         backgroundColor = AppColor.grey50,
@@ -167,8 +179,12 @@ fun ProductServiceDetailScreen(id: Int) {
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
                             when (businessDetailsState.value) {
-                                is Resource.Error -> { /*TODO*/ }
-                                is Resource.Loading -> { /*TODO*/ }
+                                is Resource.Error -> { /*TODO*/
+                                }
+
+                                is Resource.Loading -> { /*TODO*/
+                                }
+
                                 is Resource.Success -> {
                                     businessDetailsState.value.data?.let {
                                         item {
@@ -244,24 +260,20 @@ fun ProductServiceDetailScreen(id: Int) {
                     1 -> {
                         LazyColumn {
                             when (businessDetailsState.value) {
-                                is Resource.Error -> { /*TODO*/ }
-                                is Resource.Loading -> { /*TODO*/ }
+                                is Resource.Error -> { /*TODO*/
+                                }
+
+                                is Resource.Loading -> { /*TODO*/
+                                }
+
                                 is Resource.Success -> {
                                     businessDetailsState.value.data?.let {
-                                        items(it.data.testimonies) {item ->
-                                            Column(
-                                                Modifier
-                                                    .background(color = AppColor.grey100)
-                                                    .padding(7.dp)) {
-                                                Row {
-                                                    Surface(shape = CircleShape) {
-                                                        Icon(Icons.Default.Person, null)
-                                                    }
-                                                    AppText(text = item.user.name, style = AppType.subheading3)
-                                                }
-                                                AppText(text = item.comentar, style = AppType.body2,
-                                                    color = AppColor.grey500)
-                                            }
+                                        items(it.data.testimonies) { item ->
+                                            ProductServiceUlasanItem(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(horizontal = 20.dp), item = item
+                                            )
                                         }
                                     }
                                 }

@@ -173,7 +173,7 @@ fun ProductServiceAroundScreen(
                                                     item = business,
                                                     onClick = {
                                                         navController.navigate(
-                                                            NavRoute.PRODUCT_SERVICE_DETAIL.name + business.id
+                                                            "${NavRoute.PRODUCT_SERVICE_DETAIL.name}/${business.id}"
                                                         )
                                                     }
                                                 )
@@ -199,7 +199,9 @@ fun ProductServiceAroundScreen(
                                                         .fillMaxWidth()
                                                         .padding(horizontal = 20.dp),
                                                     item = it,
-                                                    onClick = {})
+                                                    onClick = {
+                                                        "${NavRoute.PRODUCT_SERVICE_DETAIL.name}/${it.id}"
+                                                    })
                                             }
                                         }
                                     }

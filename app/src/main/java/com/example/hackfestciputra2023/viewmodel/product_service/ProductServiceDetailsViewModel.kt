@@ -18,7 +18,7 @@ class ProductServiceDetailsViewModel @Inject constructor(
 ) : ViewModel() {
     val businessDetails = MutableStateFlow<Resource<GetBusinessDetailsResponse>>(Resource.Loading())
 
-    fun getBusinessDetails(id: Int) {
+    fun getBusinessDetails(id: String) {
         viewModelScope.launch {
             repository.getBusinessDetails(id).collect {
                 businessDetails.value = it
