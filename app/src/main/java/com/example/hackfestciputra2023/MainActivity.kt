@@ -5,6 +5,7 @@ import android.app.Application
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Scaffold
@@ -13,9 +14,13 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hackfestciputra2023.component.AppSnackbar
+import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
@@ -29,7 +34,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val navController = rememberNavController()
+            navController = rememberNavController()
+            rootViewmodel = viewModel()
+
             val scaffoldState = rememberScaffoldState()
             val showSnackbar: (message: String) -> Unit = { message ->
                 rootViewmodel.snackbarMessage.value = message
@@ -52,7 +59,22 @@ class MainActivity : ComponentActivity() {
                     AppSnackbar(hostState = it)
                 },
             ) {
+                NavHost(
+                    navController = navController,
+                    startDestination = NavRoute.LOGIN.name
+                ) {
+                    composable(NavRoute.SPLASH.name) {
 
+                    }
+
+                    composable(NavRoute.LOGIN.name) {
+
+                    }
+
+                    composable(NavRoute.REGISTER.name) {
+
+                    }
+                }
             }
         }
     }
