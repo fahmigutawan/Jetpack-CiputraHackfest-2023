@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,11 +38,13 @@ import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.register.RegisterViewModel
 import com.ngikut.u_future.component.AppTextInputNormal
+import kotlinx.coroutines.delay
 
 @Composable
 fun RegisterScreen(
     navController: NavController,
-    showSnackbar: (String) -> Unit
+    showSnackbar: (String) -> Unit,
+    changeLoadingState:(Boolean) -> Unit
 ) {
     val viewModel = hiltViewModel<RegisterViewModel>()
     val allNotFilled = remember {
@@ -53,6 +56,7 @@ fun RegisterScreen(
                     || viewModel.passConfirmValue.value.isEmpty()
         }
     }
+    val startLoading = remember{ mutableStateOf(false) }
     val passwordSame = remember {
         derivedStateOf {
             viewModel.passValue.value == viewModel.passConfirmValue.value
@@ -62,11 +66,24 @@ fun RegisterScreen(
 
     LaunchedEffect(key1 = registerState.value){
         when(registerState.value){
-            is Resource.Error -> {/*TODO*/}
-            is Resource.Loading -> {/*TODO*/}
+            is Resource.Error -> {
+                startLoading.value = false
+                showSnackbar(registerState.value.message.toString())
+                changeLoadingState(true)
+            }
+            is Resource.Loading -> {
+                if(startLoading.value){
+                    changeLoadingState(true)
+                }
+            }
             is Resource.Success -> {
                 registerState.value.data?.let {
                     viewModel.saveToken(it.data.token)
+                    delay(2000)
+                    navController.backQueue.clear()
+                    navController.navigate(NavRoute.USER_PICK_LOCATION.name)
+                    startLoading.value = false
+                    changeLoadingState(false)
                 }
             }
         }
@@ -183,6 +200,7 @@ fun RegisterScreen(
                         showSnackbar("Masukkan password yang sama")
                     }else{
                         viewModel.register()
+                        startLoading.value = true
                     }
                 },
                 text = "Daftar"

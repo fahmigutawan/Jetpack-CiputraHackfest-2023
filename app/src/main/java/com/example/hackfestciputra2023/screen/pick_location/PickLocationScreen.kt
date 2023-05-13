@@ -21,6 +21,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,6 +54,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @SuppressLint("MissingPermission", "UnusedMaterialScaffoldPaddingParameter")
@@ -59,7 +62,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun PickLocationScreen(
     navController: NavController,
-    showSnackbar: (String) -> Unit
+    showSnackbar: (String) -> Unit,
+    changeLoadingState:(Boolean) -> Unit
 ) {
     val viewModel = hiltViewModel<PickLocationViewModel>()
     val singapore = LatLng(viewModel.userLat.value, viewModel.userLong.value)
@@ -72,21 +76,30 @@ fun PickLocationScreen(
         rememberPermissionState(permission = android.Manifest.permission.ACCESS_COARSE_LOCATION)
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     val markerState = rememberMarkerState()
+    val startLoading = remember{ mutableStateOf(false) }
     val addLocationState = viewModel.addLocationState.collectAsState()
 
     LaunchedEffect(key1 = addLocationState.value) {
         when (addLocationState.value) {
             is Resource.Error -> {
+                startLoading.value = false
                 showSnackbar(addLocationState.value.message.toString())
+                changeLoadingState(false)
             }
 
-            is Resource.Loading -> {/*TODO*/
+            is Resource.Loading -> {
+                if(startLoading.value){
+                    changeLoadingState(true)
+                }
             }
 
             is Resource.Success -> {
                 addLocationState.value.data?.let {
+                    delay(2000)
                     navController.backQueue.clear()
                     navController.navigate(NavRoute.HOME.name)
+                    startLoading.value = false
+                    changeLoadingState(false)
                 }
             }
         }
