@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.icons.Icons
@@ -22,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.unit.dp
+import com.example.hackfestciputra2023.model.dummy.DummyBayarPesananItem
 import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.model.response.base.SingleBusinessResponse
 import com.example.hackfestciputra2023.ui.theme.AppColor
@@ -97,6 +100,65 @@ fun ProductServiceItem(
                 onClick = { /*TODO*/ },
                 backgroundColor = AppColor.grey300
             )
+        }
+    }
+}
+
+@Composable
+fun BayarPesananItem(
+    modifier: Modifier = Modifier,
+    item: DummyBayarPesananItem
+) {
+    Box(
+        modifier = modifier
+            .shadow(2.dp, RoundedCornerShape(8.dp))
+            .clip(RoundedCornerShape(8.dp))
+            .background(AppColor.grey50)
+    ) {
+        Box(modifier = Modifier.padding(8.dp)) {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    modifier = Modifier.padding(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(96.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(AppColor.primary300)
+                    )
+
+                    Column {
+                        AppText(text = item.name, style = AppType.h5)
+                        AppText(
+                            text = item.status,
+                            style = AppType.subheading3,
+                            color = AppColor.success400
+                        )
+                        AppText(
+                            text = item.lokasi,
+                            style = AppType.subheading3,
+                            color = AppColor.grey500
+                        )
+                    }
+                }
+
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    AppButton(
+                        onClick = { /*TODO*/ },
+                        text = "Lihat Maps",
+                        backgroundColor = AppColor.primary100,
+                        textColor = AppColor.primary400
+                    )
+
+                    Spacer(modifier =Modifier.width(8.dp))
+
+                    AppButton(onClick = { /*TODO*/ }, text = "Bayar sekarang")
+                }
+            }
         }
     }
 }

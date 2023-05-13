@@ -3,6 +3,7 @@ package com.example.hackfestciputra2023.screen.home
 import com.example.hackfestciputra2023.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
@@ -269,7 +271,11 @@ fun HomeScreen(navController: NavController) {
             is Resource.Success -> {
                 jasaRecommendation.value.data?.let {
                     item {
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Row(
+                            modifier = Modifier.horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Spacer(modifier = Modifier)
                             it.data.forEach {
                                 ProductServiceItem(
                                     modifier = Modifier.width(350.dp),
@@ -311,7 +317,11 @@ fun HomeScreen(navController: NavController) {
             is Resource.Success -> {
                 productRecommendation.value.data?.let {
                     item {
-                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                        Row(
+                            modifier = Modifier.horizontalScroll(rememberScrollState()),
+                            horizontalArrangement = Arrangement.spacedBy(16.dp)
+                        ) {
+                            Spacer(modifier = Modifier)
                             it.data.forEach {
                                 ProductServiceItem(
                                     modifier = Modifier.width(350.dp),
