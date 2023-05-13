@@ -1,4 +1,4 @@
-# Welcome to CiputraHackfest submission repository for FrontEnd.
+# Welcome to FrontEnd repository for CiputraHackfest submission.
 
 Nama tim : BCCxRaion
 Teknologi: Jetpack Compose
