@@ -106,6 +106,17 @@ dependencies {
 
     //Icon Extended
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
+    // Compose Maps library
+    implementation 'com.google.maps.android:maps-compose:2.11.2'
+
+    // Google Maps SDK
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
+
+    // Google Maps clustering library
+    implementation 'com.google.maps.android:maps-compose-utils:2.11.2'
+
+    // Google Maps widgets library
+    implementation 'com.google.maps.android:maps-compose-widgets:2.11.2'
 }
 
 kapt {
