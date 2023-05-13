@@ -106,6 +106,7 @@ dependencies {
 
     //Icon Extended
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
+
     // Compose Maps library
     implementation 'com.google.maps.android:maps-compose:2.11.2'
 

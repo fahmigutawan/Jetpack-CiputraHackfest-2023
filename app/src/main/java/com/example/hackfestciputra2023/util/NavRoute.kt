@@ -5,5 +5,6 @@ enum class NavRoute {
     LOGIN,
     REGISTER,
     ONBOARDING,
-    HOME
+    HOME,
+    USER_PICK_LOCATION
 }
