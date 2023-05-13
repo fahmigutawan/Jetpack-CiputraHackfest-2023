@@ -8,6 +8,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarDuration
@@ -22,6 +23,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.screen.home.HomeScreen
@@ -117,8 +119,12 @@ class MainActivity : ComponentActivity() {
                     snackbarHost = {
                         AppSnackbar(hostState = it)
                     },
+                    bottomBar = {
+                        AppBottomBar(onClick = {route -> })
+                    }
                 ) {
                     NavHost(
+                        modifier = Modifier.padding(bottom = it.calculateBottomPadding()),
                         navController = navController,
                         startDestination = NavRoute.SPLASH.name
                     ) {

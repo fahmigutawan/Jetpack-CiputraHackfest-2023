@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -36,6 +37,7 @@ import androidx.navigation.NavController
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTopBarMidTitle
 import com.example.hackfestciputra2023.component.ProductServiceItem
+import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
@@ -60,46 +62,15 @@ fun ProductServiceAroundScreen(
     val topBtnContainerWidth = remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
-    val listOfServices = listOf(
-        DummyProductServiceItem(
-            "Reparasi AC",
-            "Jasa",
-            "Kali bata"
-        ),
-        DummyProductServiceItem(
-            "Reparasi Kipas Angin",
-            "Jasa",
-            "Kali bata"
-        ),
-        DummyProductServiceItem(
-            "Reparasi Kulkas",
-            "Jasa",
-            "Kali bata"
-        )
-    )
-    val listOfProducts = listOf(
-        DummyProductServiceItem(
-            "Rujak Cingur",
-            "Produk",
-            "Jalan Rungkut"
-        ),
-        DummyProductServiceItem(
-            "Rujak Buah",
-            "Produk",
-            "Jalan Rungkut"
-        ), DummyProductServiceItem(
-            "Pecel",
-            "Produk",
-            "Jalan Rungkut"
-        )
-    )
-    val listOfProductsAndServices = listOf(
-        listOfProducts, listOfServices
-    )
+    val jasaRecommendationState = viewModel.jasaRecommendation.collectAsState()
+    val productRecommendationState = viewModel.produkRecommendation.collectAsState()
 
     Scaffold(
         topBar = {
-            AppTopBarMidTitle(onBackClicked = { navController.popBackStack() }, title = "Di sekitarmu")
+            AppTopBarMidTitle(
+                onBackClicked = { navController.popBackStack() },
+                title = "Di sekitarmu"
+            )
         }
     ) {
         Column {
@@ -183,19 +154,59 @@ fun ProductServiceAroundScreen(
                     }
 
                     LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
-                        item{
+                        item {
                             Spacer(modifier = Modifier.height(4.dp))
                         }
 
-                        items(listOfProductsAndServices[index]) {
-                            ProductServiceItem(
-                                modifier = Modifier.padding(horizontal = 20.dp),
-                                item = it,
-                                onClick = {}
-                            )
+                        when (index) {
+                            0 -> {
+                                when (productRecommendationState.value) {
+                                    is Resource.Error -> {/*TODO*/
+                                    }
+
+                                    is Resource.Loading -> {/*TODO*/
+                                    }
+
+                                    is Resource.Success -> {
+                                        productRecommendationState.value.data?.let {
+                                            items(it.data) {
+                                                ProductServiceItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 20.dp),
+                                                    item = it,
+                                                    onClick = {})
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+
+                            1 -> {
+                                when (jasaRecommendationState.value) {
+                                    is Resource.Error -> {/*TODO*/
+                                    }
+
+                                    is Resource.Loading -> {/*TODO*/
+                                    }
+
+                                    is Resource.Success -> {
+                                        jasaRecommendationState.value.data?.let {
+                                            items(it.data) {
+                                                ProductServiceItem(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(horizontal = 20.dp),
+                                                    item = it,
+                                                    onClick = {})
+                                            }
+                                        }
+                                    }
+                                }
+                            }
                         }
 
-                        item{
+                        item {
                             Spacer(modifier = Modifier.height(4.dp))
                         }
                     }
