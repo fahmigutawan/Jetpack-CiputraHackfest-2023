@@ -15,17 +15,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -40,9 +33,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTopBarMidTitle
+import com.example.hackfestciputra2023.component.ProductServiceItem
+import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.viewmodel.product_service_around.ProductServiceAroundViewModel
@@ -60,12 +54,48 @@ fun ProductServiceAroundScreen(
     val viewModel = hiltViewModel<ProductServiceAroundViewModel>()
     val listOfTopBtnSection = listOf("Produk", "Jasa")
     val pagerState = rememberPagerState()
-    val products = listOf("Makanan", "Minuman", "Peralatan", "Lainnya")
-    val services = listOf("Reparasi", "Vermak Jeans", "Sol Sepatu")
-    val listOfProductAndServices = listOf(products, services)
+    val productTags = listOf("Makanan", "Minuman", "Peralatan", "Lainnya")
+    val serviceTags = listOf("Reparasi", "Vermak Jeans", "Sol Sepatu")
+    val listOfProductAndServiceTags = listOf(productTags, serviceTags)
     val topBtnContainerWidth = remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
     val coroutineScope = rememberCoroutineScope()
+    val listOfServices = listOf(
+        DummyProductServiceItem(
+            "Reparasi AC",
+            "Jasa",
+            "Kali bata"
+        ),
+        DummyProductServiceItem(
+            "Reparasi Kipas Angin",
+            "Jasa",
+            "Kali bata"
+        ),
+        DummyProductServiceItem(
+            "Reparasi Kulkas",
+            "Jasa",
+            "Kali bata"
+        )
+    )
+    val listOfProducts = listOf(
+        DummyProductServiceItem(
+            "Rujak Cingur",
+            "Produk",
+            "Jalan Rungkut"
+        ),
+        DummyProductServiceItem(
+            "Rujak Buah",
+            "Produk",
+            "Jalan Rungkut"
+        ), DummyProductServiceItem(
+            "Pecel",
+            "Produk",
+            "Jalan Rungkut"
+        )
+    )
+    val listOfProductsAndServices = listOf(
+        listOfProducts, listOfServices
+    )
 
     Scaffold(
         topBar = {
@@ -133,7 +163,7 @@ fun ProductServiceAroundScreen(
                             .fillMaxWidth()
                             .horizontalScroll(state = rememberScrollState())
                     ) {
-                        listOfProductAndServices[index].let {
+                        listOfProductAndServiceTags[index].let {
                             it.forEach {
                                 Box(
                                     modifier = Modifier
@@ -149,6 +179,24 @@ fun ProductServiceAroundScreen(
                                     )
                                 }
                             }
+                        }
+                    }
+
+                    LazyColumn(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                        item{
+                            Spacer(modifier = Modifier.height(4.dp))
+                        }
+
+                        items(listOfProductsAndServices[index]) {
+                            ProductServiceItem(
+                                modifier = Modifier.padding(horizontal = 20.dp),
+                                item = it,
+                                onClick = {}
+                            )
+                        }
+
+                        item{
+                            Spacer(modifier = Modifier.height(4.dp))
                         }
                     }
                 }
