@@ -33,6 +33,9 @@ import com.example.hackfestciputra2023.screen.splash.SplashScreen
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshState
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
 
@@ -40,6 +43,7 @@ import dagger.hilt.android.HiltAndroidApp
 class MainActivity : ComponentActivity() {
     private lateinit var navController: NavHostController
     private lateinit var rootViewmodel: RootViewModel
+    private lateinit var swipeRefreshState: SwipeRefreshState
 
     @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,8 +51,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             navController = rememberNavController()
             rootViewmodel = viewModel()
+            swipeRefreshState =
+                rememberSwipeRefreshState(isRefreshing = rootViewmodel.isLoading.value)
 
             val scaffoldState = rememberScaffoldState()
+            val changeLoadingState: (Boolean) -> Unit = {
+                rootViewmodel.isLoading.value = it
+            }
             val showSnackbar: (message: String) -> Unit = { message ->
                 rootViewmodel.snackbarMessage.value = message
                 rootViewmodel.snackbarActive.value = true
@@ -99,42 +108,56 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            Scaffold(
-                scaffoldState = scaffoldState,
-                snackbarHost = {
-                    AppSnackbar(hostState = it)
-                },
-            ) {
-                NavHost(
-                    navController = navController,
-                    startDestination = NavRoute.SPLASH.name
+            SwipeRefresh(state = swipeRefreshState, onRefresh = { /*TODO*/ }) {
+                Scaffold(
+                    scaffoldState = scaffoldState,
+                    snackbarHost = {
+                        AppSnackbar(hostState = it)
+                    },
                 ) {
-                    composable(NavRoute.SPLASH.name) {
-                        SplashScreen(navController = navController, showSnackbar = showSnackbar)
-                    }
+                    NavHost(
+                        navController = navController,
+                        startDestination = NavRoute.SPLASH.name
+                    ) {
+                        composable(NavRoute.SPLASH.name) {
+                            SplashScreen(navController = navController, showSnackbar = showSnackbar)
+                        }
 
-                    composable(NavRoute.LOGIN.name) {
-                        LoginScreen(navController = navController, showSnackbar = showSnackbar)
-                    }
+                        composable(NavRoute.LOGIN.name) {
+                            LoginScreen(
+                                navController = navController,
+                                showSnackbar = showSnackbar,
+                                changeLoadingState = changeLoadingState
+                            )
+                        }
 
-                    composable(NavRoute.POSTLOGIN.name){
-                        PostLoginState(navController = navController)
-                    }
+                        composable(NavRoute.POSTLOGIN.name) {
+                            PostLoginState(navController = navController)
+                        }
 
-                    composable(NavRoute.REGISTER.name) {
-                        RegisterScreen(navController = navController, showSnackbar = showSnackbar)
-                    }
+                        composable(NavRoute.REGISTER.name) {
+                            RegisterScreen(
+                                navController = navController,
+                                showSnackbar = showSnackbar,
+                                changeLoadingState = changeLoadingState
+                            )
+                        }
 
-                    composable(NavRoute.ONBOARDING.name){
-                        OnboardingScreen(navController = navController)
-                    }
+                        composable(NavRoute.ONBOARDING.name) {
+                            OnboardingScreen(navController = navController)
+                        }
 
-                    composable(NavRoute.HOME.name){
-                        AppText(text = "HOME", style = AppType.h3Semibold)
-                    }
+                        composable(NavRoute.HOME.name) {
+                            AppText(text = "HOME", style = AppType.h3Semibold)
+                        }
 
-                    composable(NavRoute.USER_PICK_LOCATION.name){
-                        PickLocationScreen(navController, showSnackbar)
+                        composable(NavRoute.USER_PICK_LOCATION.name) {
+                            PickLocationScreen(
+                                navController = navController,
+                                showSnackbar = showSnackbar,
+                                changeLoadingState = changeLoadingState
+                            )
+                        }
                     }
                 }
             }

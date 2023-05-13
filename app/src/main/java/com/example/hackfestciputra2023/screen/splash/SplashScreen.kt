@@ -18,11 +18,9 @@ fun SplashScreen(navController: NavController, showSnackbar:(String) -> Unit) {
     LaunchedEffect(key1 = true){
         viewModel.getToken { token ->
             if(token.isEmpty()){
-                Log.e("MASUK", "SINI")
-//                navController.bauckQueue.clear()
+                navController.backQueue.clear()
                 navController.navigate(NavRoute.ONBOARDING.name)
             }else{
-                Log.e("MASUK", "SANA")
                 viewModel.getUserLocationPickingStatus()
             }
         }

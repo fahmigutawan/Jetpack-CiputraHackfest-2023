@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
@@ -17,9 +18,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
@@ -37,7 +40,7 @@ import com.ngikut.u_future.component.AppTextInputNormal
 import kotlinx.coroutines.delay
 
 @Composable
-fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
+fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit, changeLoadingState:(Boolean) -> Unit) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val visualTransformation = if (viewModel.isPasswordVisible)
         VisualTransformation.None else PasswordVisualTransformation()
@@ -46,18 +49,29 @@ fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
             viewModel.phoneNumber.isEmpty() || viewModel.password.isEmpty()
         }
     }
+    val startLoading = remember{ mutableStateOf(false) }
     val loginState = viewModel.loginState.collectAsState()
 
     LaunchedEffect(key1 = loginState.value) {
         when(loginState.value) {
-            is Resource.Error -> {/*TODO*/}
-            is Resource.Loading -> {/*TODO*/}
+            is Resource.Error -> {
+                startLoading.value = false
+                showSnackbar(loginState.value.message.toString())
+                changeLoadingState(false)
+            }
+            is Resource.Loading -> {
+                if(startLoading.value){
+                    changeLoadingState(true)
+                }
+            }
             is Resource.Success -> {
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data.token)
-                    delay(1500)
+                    delay(2000)
                     navController.backQueue.clear()
                     navController.navigate(NavRoute.POSTLOGIN.name)
+                    startLoading.value = false
+                    changeLoadingState(false)
                 }
             }
         }
@@ -77,7 +91,8 @@ fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
             AppTextInputNormal(
                 Modifier.fillMaxWidth(), placeHolder = "Nomor Telepon",
                 value = viewModel.phoneNumber, onValueChange = { viewModel.phoneNumber = it },
-                textStyle = AppType.subheading3
+                textStyle = AppType.subheading3,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal)
             )
             AppTextInputNormal(
                 Modifier.fillMaxWidth(), placeHolder = "Kata sandi",
@@ -106,6 +121,7 @@ fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
                     showSnackbar("Masukkan semua data dengan benar")
                 } else {
                     viewModel.login()
+                    startLoading.value = true
                 }
             }
         ) {
