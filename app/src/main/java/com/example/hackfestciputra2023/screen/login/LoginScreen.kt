@@ -36,7 +36,7 @@ import com.example.hackfestciputra2023.viewmodel.login.LoginViewModel
 import com.ngikut.u_future.component.AppTextInputNormal
 
 @Composable
-fun LoginScreen(navController: NavController) {
+fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val visualTransformation = if (viewModel.isPasswordVisible)
         VisualTransformation.None else PasswordVisualTransformation()
@@ -51,7 +51,11 @@ fun LoginScreen(navController: NavController) {
         when(loginState.value) {
             is Resource.Error -> {/*TODO*/}
             is Resource.Loading -> {/*TODO*/}
-            is Resource.Success -> {/*TODO*/}
+            is Resource.Success -> {
+                loginState.value.data?.let {
+                    viewModel.saveToken(it.data.token)
+                }
+            }
         }
     }
 
@@ -92,7 +96,15 @@ fun LoginScreen(navController: NavController) {
         }
         Spacer(Modifier.height(20.dp))
         AppButton(
-            Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
+            Modifier.fillMaxWidth(),
+            onClick = {
+                if (allNotFilled.value) {
+                    showSnackbar("Masukkan semua data dengan benar")
+                } else {
+                    viewModel.login()
+                }
+            }
+        ) {
             AppText(text = "Login", style = AppType.h4, color = AppColor.grey50)
         }
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,
