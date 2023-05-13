@@ -45,4 +45,6 @@ class Repository @Inject constructor(
     fun getUserProfile() = remoteSource.getUserProfile()
 
     fun getBusinessRecommendation(type:String) = remoteSource.getBusinessRecommendation(type)
+
+    fun getBusinessDetails(id: Int) = remoteSource.getBusinessDetails(id)
 }

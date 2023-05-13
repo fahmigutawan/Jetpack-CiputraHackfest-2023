@@ -8,4 +8,5 @@ object HttpEndpoint {
     const val GET_USER_PICKING_LOCATION_STATUS = "$BASE_URL/user/location/status"
     const val USER_PROFILE = "$BASE_URL/user/profile"
     const val BUSINESS_RECOMMENDATION = "$BASE_URL/business/query"
+    const val BUSINESS_DETAILS = "$BASE_URL/business"
 }
