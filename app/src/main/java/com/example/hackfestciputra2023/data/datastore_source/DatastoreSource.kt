@@ -16,17 +16,6 @@ class DatastoreSource @Inject constructor(
     private val context:Context
 ) {
     val datastore = context.datastore
-
-    suspend fun setFirstTimeState(firstTime:Boolean){
-        datastore.edit {
-            it[booleanPreferencesKey("isFirstTime")] = firstTime
-        }
-    }
-
-    fun getFirstTimeState() = datastore.data.map {
-        it[booleanPreferencesKey("isFirstTime")] ?: true
-    }
-
     suspend fun setToken(token:String){
         datastore.edit {
             it[stringPreferencesKey("accessToken")] = token

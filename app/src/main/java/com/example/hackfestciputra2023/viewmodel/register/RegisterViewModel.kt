@@ -38,4 +38,10 @@ class RegisterViewModel @Inject constructor(
             }
         }
     }
+
+    fun saveToken(token:String){
+        viewModelScope.launch {
+            repository.setToken(token)
+        }
+    }
 }
