@@ -1,4 +1,4 @@
-package com.example.hackfestciputra2023.model.request.register
+package com.example.hackfestciputra2023.model.request.auth
 
 data class RegisterRequest(
     val phone_number:String,

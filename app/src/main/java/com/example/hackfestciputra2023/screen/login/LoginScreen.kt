@@ -34,6 +34,7 @@ import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.login.LoginViewModel
 import com.ngikut.u_future.component.AppTextInputNormal
+import kotlinx.coroutines.delay
 
 @Composable
 fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
@@ -54,6 +55,9 @@ fun LoginScreen(navController: NavController, showSnackbar: (String) -> Unit) {
             is Resource.Success -> {
                 loginState.value.data?.let {
                     viewModel.saveToken(it.data.token)
+                    delay(1500)
+                    navController.backQueue.clear()
+                    navController.navigate(NavRoute.POSTLOGIN.name)
                 }
             }
         }

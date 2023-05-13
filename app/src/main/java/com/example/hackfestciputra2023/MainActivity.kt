@@ -23,9 +23,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.hackfestciputra2023.component.AppSnackbar
+import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.screen.login.LoginScreen
+import com.example.hackfestciputra2023.screen.login.PostLoginState
+import com.example.hackfestciputra2023.screen.onboarding.OnboardingScreen
 import com.example.hackfestciputra2023.screen.pick_location.PickLocationScreen
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
+import com.example.hackfestciputra2023.screen.splash.SplashScreen
+import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.RootViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -102,14 +107,18 @@ class MainActivity : ComponentActivity() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = NavRoute.LOGIN.name
+                    startDestination = NavRoute.SPLASH.name
                 ) {
                     composable(NavRoute.SPLASH.name) {
-
+                        SplashScreen(navController = navController, showSnackbar = showSnackbar)
                     }
 
                     composable(NavRoute.LOGIN.name) {
                         LoginScreen(navController = navController, showSnackbar = showSnackbar)
+                    }
+
+                    composable(NavRoute.POSTLOGIN.name){
+                        PostLoginState(navController = navController)
                     }
 
                     composable(NavRoute.REGISTER.name) {
@@ -117,15 +126,15 @@ class MainActivity : ComponentActivity() {
                     }
 
                     composable(NavRoute.ONBOARDING.name){
-
+                        OnboardingScreen(navController = navController)
                     }
 
                     composable(NavRoute.HOME.name){
-
+                        AppText(text = "HOME", style = AppType.h3Semibold)
                     }
 
                     composable(NavRoute.USER_PICK_LOCATION.name){
-                        PickLocationScreen()
+                        PickLocationScreen(navController, showSnackbar)
                     }
                 }
             }

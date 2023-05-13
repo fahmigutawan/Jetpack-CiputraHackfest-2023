@@ -4,4 +4,6 @@ object HttpEndpoint {
     const val BASE_URL = "https://hackfest.adityaariizkyy.my.id/api/v1"
     const val LOGIN = "$BASE_URL/user/login"
     const val REGISTER = "$BASE_URL/user/register"
+    const val USER_LOCATION = "$BASE_URL/user/location"
+    const val GET_USER_PICKING_LOCATION_STATUS = "$BASE_URL/user/location/status"
 }

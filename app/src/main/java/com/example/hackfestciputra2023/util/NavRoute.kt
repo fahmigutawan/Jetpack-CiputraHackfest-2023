@@ -3,6 +3,7 @@ package com.example.hackfestciputra2023.util
 enum class NavRoute {
     SPLASH,
     LOGIN,
+    POSTLOGIN,
     REGISTER,
     ONBOARDING,
     HOME,
