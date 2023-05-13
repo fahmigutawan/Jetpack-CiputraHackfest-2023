@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "165876714493",
+    "project_id": "bccxraion-hackfest-ciputra",
+    "storage_bucket": "bccxraion-hackfest-ciputra.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:165876714493:android:e29e3cac87e5b0b03de794",
+        "android_client_info": {
+          "package_name": "com.example.hackfestciputra2023"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "165876714493-urqeuobum8jmjlbsagggnig02c2ga4lf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFZ7eOecv3YTfR08vcNAIiYfOgfYMQzgQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "165876714493-urqeuobum8jmjlbsagggnig02c2ga4lf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
