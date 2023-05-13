@@ -14,6 +14,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -24,6 +28,7 @@ import androidx.navigation.NavController
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTextButton
+import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
@@ -35,6 +40,20 @@ fun LoginScreen(navController: NavController) {
     val viewModel = hiltViewModel<LoginViewModel>()
     val visualTransformation = if (viewModel.isPasswordVisible)
         VisualTransformation.None else PasswordVisualTransformation()
+    val allNotFilled = remember {
+        derivedStateOf {
+            viewModel.phoneNumber.isEmpty() || viewModel.password.isEmpty()
+        }
+    }
+    val loginState = viewModel.loginState.collectAsState()
+
+    LaunchedEffect(key1 = loginState.value) {
+        when(loginState.value) {
+            is Resource.Error -> {/*TODO*/}
+            is Resource.Loading -> {/*TODO*/}
+            is Resource.Success -> {/*TODO*/}
+        }
+    }
 
     Column(Modifier.padding(horizontal = 20.dp)) {
         Box(
