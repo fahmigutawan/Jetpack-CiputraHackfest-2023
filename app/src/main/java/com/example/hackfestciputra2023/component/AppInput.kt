@@ -31,6 +31,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
+import com.example.hackfestciputra2023.R
 
 @Composable
 fun AppTextInputNormal(
