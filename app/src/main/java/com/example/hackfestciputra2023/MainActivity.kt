@@ -29,6 +29,7 @@ import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.login.PostLoginState
 import com.example.hackfestciputra2023.screen.onboarding.OnboardingScreen
 import com.example.hackfestciputra2023.screen.pick_location.PickLocationScreen
+import com.example.hackfestciputra2023.screen.product_service_around.ProductServiceAroundScreen
 import com.example.hackfestciputra2023.screen.register.RegisterScreen
 import com.example.hackfestciputra2023.screen.splash.SplashScreen
 import com.example.hackfestciputra2023.ui.theme.AppType
@@ -158,6 +159,10 @@ class MainActivity : ComponentActivity() {
                                 showSnackbar = showSnackbar,
                                 changeLoadingState = changeLoadingState
                             )
+                        }
+
+                        composable(NavRoute.PRODUCT_SERVICE_AROUND.name){
+                            ProductServiceAroundScreen(navController = navController)
                         }
                     }
                 }
