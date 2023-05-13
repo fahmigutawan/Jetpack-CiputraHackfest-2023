@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,16 +49,25 @@ import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppIconButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTextButton
+import com.example.hackfestciputra2023.component.ProductServiceItem
 import com.example.hackfestciputra2023.data.remote_source.Resource
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
 import com.example.hackfestciputra2023.viewmodel.home.HomeViewModel
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.rememberPagerState
+import com.ngikut.u_future.component.AppTextInputNormal
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(navController: NavController) {
     val viewModel = hiltViewModel<HomeViewModel>()
     val getProfileState = viewModel.userProfileState.collectAsState()
+    val jasaRecommendation = viewModel.jasaRecommendation.collectAsState()
+    val productRecommendation = viewModel.produkRecommendation.collectAsState()
 
     LazyColumn(
         modifier = Modifier
@@ -141,14 +151,35 @@ fun HomeScreen(navController: NavController) {
                     .clip(RoundedCornerShape(bottomEnd = 25.dp, bottomStart = 25.dp))
                     .background(AppColor.primary400),
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(250.dp)
-                        .padding(20.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(AppColor.primary100)
-                )
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    AppTextInputNormal(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
+                        placeHolder = "Apa yang kamu butuhkan?",
+                        value = viewModel.searchValue.value,
+                        onValueChange = {
+                            viewModel.searchValue.value = it
+                        }
+                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        val state = rememberPagerState()
+                        HorizontalPager(state = state, count = 3) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp)
+                                    .padding(20.dp)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(AppColor.primary100)
+                            )
+                        }
+                        HorizontalPagerIndicator(
+                            pagerState = state,
+                            activeColor = AppColor.primary400
+                        )
+                    }
+                }
             }
         }
 
@@ -228,6 +259,33 @@ fun HomeScreen(navController: NavController) {
             }
         }
 
+        when (jasaRecommendation.value) {
+            is Resource.Error -> {/*TODO*/
+            }
+
+            is Resource.Loading -> {/*TODO*/
+            }
+
+            is Resource.Success -> {
+                jasaRecommendation.value.data?.let {
+                    item {
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                            it.data.forEach {
+                                ProductServiceItem(
+                                    modifier = Modifier.width(350.dp),
+                                    item = it,
+                                    onClick = {})
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        item {
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         item {
             Row(
                 modifier = Modifier
@@ -239,6 +297,29 @@ fun HomeScreen(navController: NavController) {
                 AppText(text = "Rekomendasi Produk", style = AppType.h3)
                 AppTextButton(onClick = { /*TODO*/ }) {
                     AppText(text = "Lihat semua", style = AppType.body2, color = AppColor.grey500)
+                }
+            }
+        }
+
+        when (productRecommendation.value) {
+            is Resource.Error -> {/*TODO*/
+            }
+
+            is Resource.Loading -> {/*TODO*/
+            }
+
+            is Resource.Success -> {
+                productRecommendation.value.data?.let {
+                    item {
+                        Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                            it.data.forEach {
+                                ProductServiceItem(
+                                    modifier = Modifier.width(350.dp),
+                                    item = it,
+                                    onClick = {})
+                            }
+                        }
+                    }
                 }
             }
         }

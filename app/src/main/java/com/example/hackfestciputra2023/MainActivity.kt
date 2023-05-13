@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.FabPosition
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -21,6 +22,8 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -144,6 +147,7 @@ class MainActivity : ComponentActivity() {
                     },
                     floatingActionButton = {
                         FloatingActionButton(
+                            modifier = Modifier.shadow(2.dp, CircleShape),
                             onClick = {
                                 navController.navigate(NavRoute.BAYAR.name)
                             },

@@ -14,6 +14,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
@@ -29,6 +30,7 @@ fun AppBottomBar(
 ) {
     BottomAppBar(
         modifier = Modifier
+            .shadow(2.dp)
             .fillMaxWidth()
             .background(AppColor.grey50),
         backgroundColor = AppColor.grey50

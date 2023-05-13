@@ -23,6 +23,7 @@ class HomeViewModel @Inject constructor(
     var searchQuery by mutableStateOf("")
     val jasaRecommendation = MutableStateFlow<Resource<GetBusinessResponse>>(Resource.Loading())
     val produkRecommendation = MutableStateFlow<Resource<GetBusinessResponse>>(Resource.Loading())
+    val searchValue = mutableStateOf("")
 
     fun getJasaRecommendation(){
         viewModelScope.launch {
@@ -35,7 +36,7 @@ class HomeViewModel @Inject constructor(
     fun getProductRecommendation(){
         viewModelScope.launch {
             repository.getBusinessRecommendation("Produk").collect{
-                jasaRecommendation.value = it
+                produkRecommendation.value = it
             }
         }
     }
