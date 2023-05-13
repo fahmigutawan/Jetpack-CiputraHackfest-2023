@@ -62,7 +62,7 @@ class MainActivity : ComponentActivity() {
             ) {
                 NavHost(
                     navController = navController,
-                    startDestination = NavRoute.LOGIN.name
+                    startDestination = NavRoute.REGISTER.name
                 ) {
                     composable(NavRoute.SPLASH.name) {
 
