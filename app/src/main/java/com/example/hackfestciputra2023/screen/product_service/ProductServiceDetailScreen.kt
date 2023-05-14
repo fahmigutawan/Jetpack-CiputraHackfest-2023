@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,11 +19,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.ripple.rememberRipple
@@ -81,35 +84,45 @@ fun ProductServiceDetailScreen(
             AppTopBarMidTitle(onBackClicked = { navController.popBackStack() }, title = "Produk")
         },
         bottomBar = {
-            Box(
+            BottomAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(AppColor.grey50)
+                    .background(AppColor.grey50),
+                backgroundColor = AppColor.grey50
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp), horizontalArrangement = Arrangement.Center
-                ) {
-                    AppButton(
-                        onClick = {
-                            if (businessDetailsState.value is Resource.Success) {
-                                businessDetailsState.value.data?.let {
-                                    navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.data.latitude}&long=${it.data.longitude}")
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                    Row(
+                        modifier = Modifier,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        AppButton(
+                            modifier = Modifier.fillMaxHeight(),
+                            onClick = {
+                                if (businessDetailsState.value is Resource.Success) {
+                                    businessDetailsState.value.data?.let {
+                                        navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.data.latitude}&long=${it.data.longitude}")
+                                    }
                                 }
-                            }
-                        },
-                        text = "Lihat Map",
-                        textColor = AppColor.primary400,
-                        backgroundColor = AppColor.grey50,
-                        borderWidth = 2.dp,
-                        borderColor = AppColor.primary400
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    AppButton(
-                        onClick = { /*TODO*/ },
-                        text = "Pesan Sekarang"
-                    )
+                            },
+                            text = "Lihat Map",
+                            textColor = AppColor.primary400,
+                            backgroundColor = AppColor.grey50,
+                            borderWidth = 2.dp,
+                            borderColor = AppColor.primary400
+                        )
+                        AppButton(
+                            modifier = Modifier.fillMaxHeight(),
+                            onClick = { /*TODO*/ },
+                            text = "Pesan Sekarang"
+                        )
+                        AppButton(modifier = Modifier.fillMaxHeight(), onClick = { navController.navigate("${NavRoute.CHAT.name}/${businessDetailsState.value.data?.data?.name ?: ""}/${businessDetailsState.value.data?.data?.name ?: ""}") }) {
+                            Icon(
+                                imageVector = Icons.Default.Message,
+                                contentDescription = "",
+                                tint = AppColor.grey50
+                            )
+                        }
+                    }
                 }
             }
         }

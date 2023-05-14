@@ -55,4 +55,6 @@ class Repository @Inject constructor(
             description
         )
     )
+
+    fun sendChat(message:String, job:String) = remoteSource.sendChat(message, job)
 }

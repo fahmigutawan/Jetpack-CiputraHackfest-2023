@@ -17,5 +17,6 @@ enum class NavRoute {
     PRODUCT_SERVICE_OPEN24,
     MAP_DETAIL,
     WEBVIEW,
-    BAYAR_INSERT_AMOUNT
+    BAYAR_INSERT_AMOUNT,
+    CHAT
 }

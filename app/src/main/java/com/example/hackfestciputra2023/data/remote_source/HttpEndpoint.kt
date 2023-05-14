@@ -10,4 +10,5 @@ object HttpEndpoint {
     const val BUSINESS_RECOMMENDATION = "$BASE_URL/business/query"
     const val BUSINESS_DETAILS = "$BASE_URL/business"
     const val PAY = "$BASE_URL/payment/pay"
+    const val SEND_CHAT = "$BASE_URL/chat/send"
 }

@@ -7,6 +7,7 @@ import com.example.hackfestciputra2023.model.request.payment.PayRequest
 import com.example.hackfestciputra2023.model.response.auth.AuthResponse
 import com.example.hackfestciputra2023.model.response.business.GetBusinessDetailsResponse
 import com.example.hackfestciputra2023.model.response.business.GetBusinessResponse
+import com.example.hackfestciputra2023.model.response.chat.SendChatResponse
 import com.example.hackfestciputra2023.model.response.location.AddLocationResponse
 import com.example.hackfestciputra2023.model.response.location.GetLocationPickingStatusResponse
 import com.example.hackfestciputra2023.model.response.payment.PayResponse
@@ -128,6 +129,19 @@ class RemoteSource @Inject constructor(
         if (res.meta.success) {
             Resource.Success(res)
         } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun sendChat(message:String, job:String) = getResponse {
+        val res = client.get {
+            url("${HttpEndpoint.SEND_CHAT}?message=$message&job=$job")
+            contentType(ContentType.Application.Json)
+        }.body<SendChatResponse>()
+
+        if(res.meta.success){
+            Resource.Success(res)
+        }else{
             Resource.Error(res.meta.message)
         }
     }

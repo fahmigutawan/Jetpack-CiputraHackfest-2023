@@ -15,6 +15,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
+import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -27,10 +28,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.component.AppWebView
+import com.example.hackfestciputra2023.data.remote_source.HttpEndpoint
+import com.example.hackfestciputra2023.screen.ChatScreen
 import com.example.hackfestciputra2023.screen.bayar.BayarInputAmountScreen
 import com.example.hackfestciputra2023.screen.bayar.BayarScreen
 import com.example.hackfestciputra2023.screen.bayar.BayarScreenSuccess
@@ -295,6 +299,30 @@ class MainActivity : ComponentActivity() {
                                 rootViewModel = rootViewmodel,
                                 menu = menu
                             )
+                        }
+
+                        composable(
+                            route = "paymente",
+                            deepLinks = listOf(
+                                navDeepLink { uriPattern = "https://${HttpEndpoint.BASE_URL}/payment/success" }
+                            )
+                        ){
+                            Text(text = "CEKKKK")
+                        }
+
+                        composable("${NavRoute.CHAT.name}/{nama}/{job}",
+                        arguments = listOf(
+                            navArgument("nama"){
+                                type = NavType.StringType
+                            },
+                            navArgument("job"){
+                                type = NavType.StringType
+                            }
+                        )
+                        ){
+                            val nama = it.arguments?.getString("nama") ?: ""
+                            val job = it.arguments?.getString("job") ?: ""
+                            ChatScreen(navController = navController, nama = nama, job = job)
                         }
                     }
                 }
