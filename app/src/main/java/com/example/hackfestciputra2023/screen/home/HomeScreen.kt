@@ -22,9 +22,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowRight
 import androidx.compose.material.icons.filled.ArrowRightAlt
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.ripple.rememberRipple
@@ -35,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
@@ -53,6 +56,7 @@ import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTextButton
 import com.example.hackfestciputra2023.component.ProductServiceItem
 import com.example.hackfestciputra2023.data.remote_source.Resource
+import com.example.hackfestciputra2023.model.dummy.DummyArticle
 import com.example.hackfestciputra2023.ui.theme.AppColor
 import com.example.hackfestciputra2023.ui.theme.AppType
 import com.example.hackfestciputra2023.util.NavRoute
@@ -70,6 +74,10 @@ fun HomeScreen(navController: NavController) {
     val getProfileState = viewModel.userProfileState.collectAsState()
     val jasaRecommendation = viewModel.jasaRecommendation.collectAsState()
     val productRecommendation = viewModel.produkRecommendation.collectAsState()
+
+    val dummyArticles = listOf(
+        DummyArticle("Program Pendanaan Bagi Usaha UKM", "1 Juli 2023")
+    )
 
     LazyColumn(
         modifier = Modifier
@@ -328,6 +336,49 @@ fun HomeScreen(navController: NavController) {
                                     item = it,
                                     onClick = {})
                             }
+                        }
+                    }
+                }
+            }
+        }
+        item {
+            Row(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp), Arrangement.SpaceBetween
+            ) {
+                AppText(text = "Artikel Terbaru", style = AppType.h3)
+                AppText(text = "Lihat Semua", style = AppType.body2, color = AppColor.grey600)
+            }
+            Spacer(Modifier.height(17.dp))
+        }
+        items(dummyArticles) { article ->
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp)
+                    .shadow(5.dp, shape = RoundedCornerShape(Int.MAX_VALUE.dp))
+                    .clip(RoundedCornerShape(10.dp))
+            ) {
+                Row(Modifier.padding(7.dp)) {
+                    Box(
+                        modifier = Modifier
+                            .size(96.dp)
+                            .clip(RoundedCornerShape(8.dp))
+                            .background(AppColor.primary300)
+                    )
+                    Spacer(Modifier.width(5.dp))
+                    Column(Modifier.padding(start = 5.dp)) {
+                        Surface(color = AppColor.primary400) {
+                            AppText(text = "Artikel", style = AppType.body3,
+                                modifier = Modifier.padding(5.dp))
+                        }
+                        AppText(text = article.title, style = AppType.subheading3,
+                            modifier = Modifier.padding(vertical = 5.dp))
+                        Row {
+                            Icon(Icons.Default.CalendarMonth, null, tint = AppColor.grey500)
+                            Spacer(Modifier.width(5.dp))
+                            AppText(text = article.timeStamp, style = AppType.body3)
                         }
                     }
                 }
