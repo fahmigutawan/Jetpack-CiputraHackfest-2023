@@ -197,9 +197,7 @@ class MainActivity : ComponentActivity() {
                         }
 
                         composable(NavRoute.HOME.name) {
-                            HomeScreen(
-                                navController
-                            )
+                            HomeScreen(navController)
                         }
 
                         composable(NavRoute.BAYAR.name) {

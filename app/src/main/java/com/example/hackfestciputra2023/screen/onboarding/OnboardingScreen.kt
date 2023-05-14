@@ -39,19 +39,19 @@ import kotlinx.coroutines.launch
 fun OnboardingScreen(navController: NavController) {
     val onboardingItems = listOf(
         OnboardingData(
-            R.drawable.image_on_boarding_1,
+            R.drawable.group_8676,
             "Temukan jasa keliling di sekitarmu",
             "Nikmati kemudahan menemukan jasa keliling tanpa harus " +
                     "saling tunggu di tengah ketidakpastian mobilisasi."
         ),
         OnboardingData(
-            R.drawable.image_on_boarding_2,
-            "Dapatkan berbagai macam produk UMKM",
+            R.drawable.group_8675,
+            "Dapatkan berbagai macam produk UMK",
             "Pesan produk yang Anda inginkan dari berbagai " +
                     "pedagang keliling yang berjualan di sekitarmu."
         ),
         OnboardingData(
-            R.drawable.image_on_boarding_3,
+            R.drawable.group_55224241,
             "Pilih jenis akunmu!",
             "Jadilah pengguna atau ambil peluang untuk memperluas jangkauan bisnismu."
         )

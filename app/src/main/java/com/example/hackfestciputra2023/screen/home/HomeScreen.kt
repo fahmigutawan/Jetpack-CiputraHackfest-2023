@@ -1,7 +1,10 @@
 package com.example.hackfestciputra2023.screen.home
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import com.example.hackfestciputra2023.R
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -44,6 +47,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -80,8 +84,7 @@ fun HomeScreen(navController: NavController) {
     )
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         item {
             Box(
@@ -159,7 +162,7 @@ fun HomeScreen(navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(bottomEnd = 25.dp, bottomStart = 25.dp))
-                    .background(AppColor.primary400),
+                    .background(AppColor.primary400)
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
                     AppTextInputNormal(
@@ -342,10 +345,11 @@ fun HomeScreen(navController: NavController) {
             }
         }
         item {
+            Spacer(Modifier.height(15.dp))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp), Arrangement.SpaceBetween
+                    .padding(horizontal = 23.dp), Arrangement.SpaceBetween
             ) {
                 AppText(text = "Artikel Terbaru", style = AppType.h3)
                 AppText(text = "Lihat Semua", style = AppType.body2, color = AppColor.grey600)
@@ -353,23 +357,18 @@ fun HomeScreen(navController: NavController) {
             Spacer(Modifier.height(17.dp))
         }
         items(dummyArticles) { article ->
-            Box(
+            Surface(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 20.dp)
-                    .shadow(5.dp, shape = RoundedCornerShape(Int.MAX_VALUE.dp))
-                    .clip(RoundedCornerShape(10.dp))
+                    .padding(horizontal = 20.dp),
+                shape = RoundedCornerShape(20.dp),
+                border = BorderStroke(1.dp, AppColor.grey400)
             ) {
-                Row(Modifier.padding(7.dp)) {
-                    Box(
-                        modifier = Modifier
-                            .size(96.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(AppColor.primary300)
-                    )
+                Row(Modifier.padding(15.dp)) {
+                    Image(painterResource(R.drawable.frame_992), null, Modifier.size(120.dp))
                     Spacer(Modifier.width(5.dp))
                     Column(Modifier.padding(start = 5.dp)) {
-                        Surface(color = AppColor.primary400) {
+                        Surface(color = AppColor.primary400, shape = RoundedCornerShape(5.dp)) {
                             AppText(text = "Artikel", style = AppType.body3,
                                 modifier = Modifier.padding(5.dp))
                         }
