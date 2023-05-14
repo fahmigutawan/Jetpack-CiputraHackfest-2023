@@ -135,7 +135,9 @@ fun BayarScreen(
                                 lihatMapClicked = {
                                     navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.lat}&long=${it.long}")
                                 },
-                                bayarClicked = {/*TODO*/})
+                                bayarClicked = {
+                                    navController.navigate("${NavRoute.BAYAR_INSERT_AMOUNT.name}/${it.name}")
+                                })
                         }
 
                         item {

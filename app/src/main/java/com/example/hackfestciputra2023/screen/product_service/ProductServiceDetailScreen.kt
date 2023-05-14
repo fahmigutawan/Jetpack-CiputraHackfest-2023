@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -35,11 +36,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTopBarMidTitle
@@ -75,7 +78,7 @@ fun ProductServiceDetailScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarMidTitle(onBackClicked = { /*TODO*/ }, title = "Produk")
+            AppTopBarMidTitle(onBackClicked = { navController.popBackStack() }, title = "Produk")
         },
         bottomBar = {
             Box(
@@ -119,7 +122,28 @@ fun ProductServiceDetailScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(AppColor.primary100)
-            )
+            ) {
+                when (businessDetailsState.value) {
+                    is Resource.Error -> {
+                        /*TODO*/
+                    }
+
+                    is Resource.Loading -> {
+                        /*TODO*/
+                    }
+
+                    is Resource.Success -> {
+                        businessDetailsState.value.data?.let {
+                            AsyncImage(
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop,
+                                model = it.data.link_photo,
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                }
+            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

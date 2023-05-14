@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,7 +25,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.hackfestciputra2023.model.dummy.DummyBayarPesananItem
 import com.example.hackfestciputra2023.model.dummy.DummyProductServiceItem
 import com.example.hackfestciputra2023.model.response.base.SingleBusinessResponse
@@ -65,10 +68,17 @@ fun ProductServiceItem(
                         .size(90.dp)
                         .clip(RoundedCornerShape(10.dp))
                         .background(AppColor.primary300)
-                )
+                ) {
+                    AsyncImage(
+                        modifier = Modifier.fillMaxSize(),
+                        model = item.link_photo,
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop
+                    )
+                }
 
                 Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                    AppText(text = item.description, style = AppType.h5)
+                    AppText(text = item.name, style = AppType.h5)
 
                     Box(
                         modifier = Modifier
@@ -110,8 +120,8 @@ fun ProductServiceItem(
 fun BayarPesananItem(
     modifier: Modifier = Modifier,
     item: DummyBayarPesananItem,
-    lihatMapClicked:(DummyBayarPesananItem) -> Unit,
-    bayarClicked:(DummyBayarPesananItem) -> Unit
+    lihatMapClicked: (DummyBayarPesananItem) -> Unit,
+    bayarClicked: (DummyBayarPesananItem) -> Unit
 ) {
     Box(
         modifier = modifier

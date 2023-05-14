@@ -17,6 +17,8 @@ class RootViewModel @Inject constructor(
     val snackbarAction: MutableState<(SnackbarData?) -> Unit> = mutableStateOf({})
     val snackbarActionLabel = mutableStateOf("Tutup")
 
+    val xenditUrl = mutableStateOf("")
+
     val isLoading = mutableStateOf(false)
     val currentRoute = mutableStateOf("")
     val showBottombar = mutableStateOf(false)

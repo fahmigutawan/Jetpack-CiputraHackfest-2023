@@ -3,6 +3,7 @@ package com.example.hackfestciputra2023
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -29,6 +30,8 @@ import androidx.navigation.navArgument
 import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
+import com.example.hackfestciputra2023.component.AppWebView
+import com.example.hackfestciputra2023.screen.bayar.BayarInputAmountScreen
 import com.example.hackfestciputra2023.screen.bayar.BayarScreen
 import com.example.hackfestciputra2023.screen.home.HomeScreen
 import com.example.hackfestciputra2023.screen.login.LoginScreen
@@ -244,14 +247,14 @@ class MainActivity : ComponentActivity() {
                         composable(
                             "${NavRoute.MAP_DETAIL.name}/lat={lat}&long={long}",
                             arguments = listOf(
-                                navArgument("lat"){
+                                navArgument("lat") {
                                     type = NavType.FloatType
                                 },
-                                navArgument("long"){
+                                navArgument("long") {
                                     type = NavType.FloatType
                                 }
                             )
-                        ){
+                        ) {
                             val lat = (it.arguments?.getFloat("lat") ?: 0f).toDouble()
                             val long = (it.arguments?.getFloat("long") ?: 0f).toDouble()
 
@@ -259,6 +262,33 @@ class MainActivity : ComponentActivity() {
                                 navController = navController,
                                 pedagang_lat = lat,
                                 pedagang_long = long
+                            )
+                        }
+
+                        composable(
+                            NavRoute.WEBVIEW.name
+                        ) {
+                            AppWebView(
+                                url = rootViewmodel.xenditUrl.value,
+                                onUrlChange = {
+                                    Log.e("URL CHANGED", it)
+                            }
+                            )
+                        }
+
+                        composable(
+                            "${NavRoute.BAYAR_INSERT_AMOUNT.name}/{menu}",
+                            arguments = listOf(
+                                navArgument("menu") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val menu = it.arguments?.getString("menu") ?: ""
+                            BayarInputAmountScreen(
+                                navController = navController,
+                                rootViewModel = rootViewmodel,
+                                menu = menu
                             )
                         }
                     }
