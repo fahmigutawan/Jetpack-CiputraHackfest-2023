@@ -30,6 +30,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
 import com.example.hackfestciputra2023.screen.bayar.BayarScreen
+import com.example.hackfestciputra2023.screen.bayar.BayarScreenSuccess
 import com.example.hackfestciputra2023.screen.home.HomeScreen
 import com.example.hackfestciputra2023.screen.login.LoginScreen
 import com.example.hackfestciputra2023.screen.login.PostLoginState
@@ -231,6 +232,10 @@ class MainActivity : ComponentActivity() {
                         ) { backStackEntry ->
                             val id = backStackEntry.arguments?.getString("id") ?: ""
                             ProductServiceDetailScreen(navController, id)
+                        }
+
+                        composable(NavRoute.BAYAR_COMPLETED.name) {
+                            BayarScreenSuccess(navController = navController)
                         }
 
                         composable(NavRoute.PRODUCT_SERVICE_MOST_REQUESTED.name) {
