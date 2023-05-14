@@ -3,11 +3,14 @@ package com.example.hackfestciputra2023.data.remote_source
 import com.example.hackfestciputra2023.model.request.auth.LoginRequest
 import com.example.hackfestciputra2023.model.request.auth.RegisterRequest
 import com.example.hackfestciputra2023.model.request.location.AddLocationRequest
+import com.example.hackfestciputra2023.model.request.payment.PayRequest
 import com.example.hackfestciputra2023.model.response.auth.AuthResponse
 import com.example.hackfestciputra2023.model.response.business.GetBusinessDetailsResponse
 import com.example.hackfestciputra2023.model.response.business.GetBusinessResponse
+import com.example.hackfestciputra2023.model.response.chat.SendChatResponse
 import com.example.hackfestciputra2023.model.response.location.AddLocationResponse
 import com.example.hackfestciputra2023.model.response.location.GetLocationPickingStatusResponse
+import com.example.hackfestciputra2023.model.response.payment.PayResponse
 import com.example.hackfestciputra2023.model.response.user.UserProfileResponse
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -90,15 +93,15 @@ class RemoteSource @Inject constructor(
         }
     }
 
-    fun getBusinessRecommendation(type:String) = getResponse {
+    fun getBusinessRecommendation(type: String) = getResponse {
         val res = client.get {
             url("${HttpEndpoint.BUSINESS_RECOMMENDATION}?type=$type")
             contentType(ContentType.Application.Json)
         }.body<GetBusinessResponse>()
 
-        if(res.meta.success){
+        if (res.meta.success) {
             Resource.Success(res)
-        }else{
+        } else {
             Resource.Error(res.meta.message)
         }
     }
@@ -108,6 +111,33 @@ class RemoteSource @Inject constructor(
             url("${HttpEndpoint.BUSINESS_DETAILS}/$id")
             contentType(ContentType.Application.Json)
         }.body<GetBusinessDetailsResponse>()
+
+        if (res.meta.success) {
+            Resource.Success(res)
+        } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun processPay(request: PayRequest) = getResponse {
+        val res = client.post {
+            url(HttpEndpoint.PAY)
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }.body<PayResponse>()
+
+        if (res.meta.success) {
+            Resource.Success(res)
+        } else {
+            Resource.Error(res.meta.message)
+        }
+    }
+
+    fun sendChat(message:String, job:String) = getResponse {
+        val res = client.get {
+            url("${HttpEndpoint.SEND_CHAT}?message=$message&job=$job")
+            contentType(ContentType.Application.Json)
+        }.body<SendChatResponse>()
 
         if(res.meta.success){
             Resource.Success(res)

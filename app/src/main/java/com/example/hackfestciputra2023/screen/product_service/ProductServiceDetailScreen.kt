@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,11 +19,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomAppBar
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.ripple.rememberRipple
@@ -35,11 +39,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import com.example.hackfestciputra2023.component.AppButton
 import com.example.hackfestciputra2023.component.AppText
 import com.example.hackfestciputra2023.component.AppTopBarMidTitle
@@ -75,38 +81,48 @@ fun ProductServiceDetailScreen(
 
     Scaffold(
         topBar = {
-            AppTopBarMidTitle(onBackClicked = { /*TODO*/ }, title = "Produk")
+            AppTopBarMidTitle(onBackClicked = { navController.popBackStack() }, title = "Produk")
         },
         bottomBar = {
-            Box(
+            BottomAppBar(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(AppColor.grey50)
+                    .background(AppColor.grey50),
+                backgroundColor = AppColor.grey50
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(20.dp), horizontalArrangement = Arrangement.Center
-                ) {
-                    AppButton(
-                        onClick = {
-                            if (businessDetailsState.value is Resource.Success) {
-                                businessDetailsState.value.data?.let {
-                                    navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.data.latitude}&long=${it.data.longitude}")
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                    Row(
+                        modifier = Modifier,
+                        horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        AppButton(
+                            modifier = Modifier.fillMaxHeight(),
+                            onClick = {
+                                if (businessDetailsState.value is Resource.Success) {
+                                    businessDetailsState.value.data?.let {
+                                        navController.navigate("${NavRoute.MAP_DETAIL.name}/lat=${it.data.latitude}&long=${it.data.longitude}")
+                                    }
                                 }
-                            }
-                        },
-                        text = "Lihat Map",
-                        textColor = AppColor.primary400,
-                        backgroundColor = AppColor.grey50,
-                        borderWidth = 2.dp,
-                        borderColor = AppColor.primary400
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    AppButton(
-                        onClick = { /*TODO*/ },
-                        text = "Pesan Sekarang"
-                    )
+                            },
+                            text = "Lihat Map",
+                            textColor = AppColor.primary400,
+                            backgroundColor = AppColor.grey50,
+                            borderWidth = 2.dp,
+                            borderColor = AppColor.primary400
+                        )
+                        AppButton(
+                            modifier = Modifier.fillMaxHeight(),
+                            onClick = { /*TODO*/ },
+                            text = "Pesan Sekarang"
+                        )
+                        AppButton(modifier = Modifier.fillMaxHeight(), onClick = { navController.navigate("${NavRoute.CHAT.name}/${businessDetailsState.value.data?.data?.name ?: ""}/${businessDetailsState.value.data?.data?.name ?: ""}") }) {
+                            Icon(
+                                imageVector = Icons.Default.Message,
+                                contentDescription = "",
+                                tint = AppColor.grey50
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -119,7 +135,28 @@ fun ProductServiceDetailScreen(
                     .height(200.dp)
                     .clip(RoundedCornerShape(16.dp))
                     .background(AppColor.primary100)
-            )
+            ) {
+                when (businessDetailsState.value) {
+                    is Resource.Error -> {
+                        /*TODO*/
+                    }
+
+                    is Resource.Loading -> {
+                        /*TODO*/
+                    }
+
+                    is Resource.Success -> {
+                        businessDetailsState.value.data?.let {
+                            AsyncImage(
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop,
+                                model = it.data.link_photo,
+                                contentDescription = ""
+                            )
+                        }
+                    }
+                }
+            }
             Box(
                 modifier = Modifier
                     .fillMaxWidth()

@@ -122,6 +122,9 @@ dependencies {
 
     //Permisssions
     implementation "com.google.accompanist:accompanist-permissions:0.25.1"
+
+    //Accompanist webview
+    implementation "com.google.accompanist:accompanist-webview:0.25.1"
 }
 
 kapt {

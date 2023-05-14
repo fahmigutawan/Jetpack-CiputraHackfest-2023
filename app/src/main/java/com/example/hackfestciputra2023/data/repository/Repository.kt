@@ -6,6 +6,7 @@ import com.example.hackfestciputra2023.data.remote_source.RemoteSource
 import com.example.hackfestciputra2023.model.request.auth.LoginRequest
 import com.example.hackfestciputra2023.model.request.auth.RegisterRequest
 import com.example.hackfestciputra2023.model.request.location.AddLocationRequest
+import com.example.hackfestciputra2023.model.request.payment.PayRequest
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -47,4 +48,13 @@ class Repository @Inject constructor(
     fun getBusinessRecommendation(type:String) = remoteSource.getBusinessRecommendation(type)
 
     fun getBusinessDetails(id: String) = remoteSource.getBusinessDetails(id)
+
+    fun processPay(amount:Int, description:String) = remoteSource.processPay(
+        PayRequest(
+            amount,
+            description
+        )
+    )
+
+    fun sendChat(message:String, job:String) = remoteSource.sendChat(message, job)
 }

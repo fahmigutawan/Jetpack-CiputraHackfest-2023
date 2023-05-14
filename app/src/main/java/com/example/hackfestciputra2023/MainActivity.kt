@@ -3,6 +3,7 @@ package com.example.hackfestciputra2023
 import android.annotation.SuppressLint
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.SnackbarData
 import androidx.compose.material.SnackbarDuration
 import androidx.compose.material.SnackbarResult
+import androidx.compose.material.Text
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
@@ -26,9 +28,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import androidx.navigation.navDeepLink
 import coil.compose.rememberAsyncImagePainter
 import com.example.hackfestciputra2023.component.AppBottomBar
 import com.example.hackfestciputra2023.component.AppSnackbar
+import com.example.hackfestciputra2023.component.AppWebView
+import com.example.hackfestciputra2023.data.remote_source.HttpEndpoint
+import com.example.hackfestciputra2023.screen.ChatScreen
+import com.example.hackfestciputra2023.screen.bayar.BayarInputAmountScreen
 import com.example.hackfestciputra2023.screen.bayar.BayarScreen
 import com.example.hackfestciputra2023.screen.bayar.BayarScreenSuccess
 import com.example.hackfestciputra2023.screen.home.HomeScreen
@@ -247,14 +254,14 @@ class MainActivity : ComponentActivity() {
                         composable(
                             "${NavRoute.MAP_DETAIL.name}/lat={lat}&long={long}",
                             arguments = listOf(
-                                navArgument("lat"){
+                                navArgument("lat") {
                                     type = NavType.FloatType
                                 },
-                                navArgument("long"){
+                                navArgument("long") {
                                     type = NavType.FloatType
                                 }
                             )
-                        ){
+                        ) {
                             val lat = (it.arguments?.getFloat("lat") ?: 0f).toDouble()
                             val long = (it.arguments?.getFloat("long") ?: 0f).toDouble()
 
@@ -263,6 +270,57 @@ class MainActivity : ComponentActivity() {
                                 pedagang_lat = lat,
                                 pedagang_long = long
                             )
+                        }
+
+                        composable(
+                            NavRoute.WEBVIEW.name
+                        ) {
+                            AppWebView(
+                                url = rootViewmodel.xenditUrl.value,
+                                onUrlChange = {
+                                    Log.e("URL CHANGED", it)
+                            }
+                            )
+                        }
+
+                        composable(
+                            "${NavRoute.BAYAR_INSERT_AMOUNT.name}/{menu}",
+                            arguments = listOf(
+                                navArgument("menu") {
+                                    type = NavType.StringType
+                                }
+                            )
+                        ) {
+                            val menu = it.arguments?.getString("menu") ?: ""
+                            BayarInputAmountScreen(
+                                navController = navController,
+                                rootViewModel = rootViewmodel,
+                                menu = menu
+                            )
+                        }
+
+                        composable(
+                            route = "paymente",
+                            deepLinks = listOf(
+                                navDeepLink { uriPattern = "https://${HttpEndpoint.BASE_URL}/payment/success" }
+                            )
+                        ){
+                            Text(text = "CEKKKK")
+                        }
+
+                        composable("${NavRoute.CHAT.name}/{nama}/{job}",
+                        arguments = listOf(
+                            navArgument("nama"){
+                                type = NavType.StringType
+                            },
+                            navArgument("job"){
+                                type = NavType.StringType
+                            }
+                        )
+                        ){
+                            val nama = it.arguments?.getString("nama") ?: ""
+                            val job = it.arguments?.getString("job") ?: ""
+                            ChatScreen(navController = navController, nama = nama, job = job)
                         }
                     }
                 }

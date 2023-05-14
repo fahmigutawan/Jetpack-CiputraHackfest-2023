@@ -289,9 +289,11 @@ fun HomeScreen(navController: NavController) {
                             Spacer(modifier = Modifier)
                             it.data.forEach {
                                 ProductServiceItem(
-                                    modifier = Modifier.width(350.dp),
+                                    modifier = Modifier.width(300.dp),
                                     item = it,
-                                    onClick = {})
+                                    onClick = {
+                                        navController.navigate("${NavRoute.PRODUCT_SERVICE_DETAIL}/${it.id}")
+                                    })
                             }
                         }
                     }
@@ -335,9 +337,11 @@ fun HomeScreen(navController: NavController) {
                             Spacer(modifier = Modifier)
                             it.data.forEach {
                                 ProductServiceItem(
-                                    modifier = Modifier.width(350.dp),
+                                    modifier = Modifier.width(300.dp),
                                     item = it,
-                                    onClick = {})
+                                    onClick = {
+                                        navController.navigate("${NavRoute.PRODUCT_SERVICE_DETAIL}/${it.id}")
+                                    })
                             }
                         }
                     }
